@@ -1,4 +1,57 @@
-@import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+  .progress-bar {
+    @apply w-full h-2 bg-gray-100 rounded-full overflow-hidden;
+  }
+
+  .progress-bar-fill {
+    @apply h-full bg-primary transition-all duration-300 ease-in-out;
+  }
+
+  .stat-box {
+    @apply flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow-sm border border-gray-100;
+  }
+
+  .card-container {
+    @apply bg-white shadow-sm border border-gray-100;
+  }
+
+  .card-highlight {
+    @apply bg-white shadow-sm border-2 border-primary/20;
+  }
+
+  .card-content-wrapper {
+    @apply flex flex-col;
+  }
+
+  .card-header-fixed {
+    @apply pb-4;
+  }
+
+  .card-content-fixed {
+    @apply flex-1 flex flex-col;
+  }
+
+  .card-footer-fixed {
+    @apply pt-4;
+  }
+
+  .card-media {
+    @apply aspect-video rounded-lg border flex items-center justify-center;
+  }
+
+  .card-meta {
+    @apply flex items-center justify-between mt-4;
+  }
+
+  .badge-level {
+    @apply bg-primary/10 text-primary border-0;
+  }
+}
 
 :root {
   --radius: 0.5rem;
