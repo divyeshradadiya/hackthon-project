@@ -1,10 +1,10 @@
-import { currentUser } from '@clerk/nextjs/server';
 import { courses, db, modules } from '@repo/database';
 import { eq } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
 
-export async function GET(req: Request, { params }: { params: { courseId: string } }) {
-  const courseId = params?.courseId;
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  const courseId = url.pathname.split('/').pop();
 
   if (!courseId) {
     return NextResponse.json({ error: 'Missing courseId' }, { status: 400 });

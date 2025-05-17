@@ -2,9 +2,6 @@
 
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import { ChevronDown } from 'lucide-react';
 import { useCourse } from '@/app/services/course-service';
 import { Markdown } from '@/app/components/Markdown';
 
