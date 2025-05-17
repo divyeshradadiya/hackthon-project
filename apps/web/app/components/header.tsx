@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { useState, useEffect } from "react"
-import { Button } from "@repo/ui"
-import { Brain, Menu, X } from "lucide-react"
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { Button } from "@repo/ui";
+import { Brain, Menu, X } from "lucide-react";
 
 export function Header() {
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [isAuthenticated, setIsAuthenticated] = useState(false) // Default to false
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Default to false
 
   useEffect(() => {
     // Simulate fetching authentication status on the client
@@ -27,16 +27,28 @@ export function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="#features" className="text-gray-600 hover:text-primary transition-colors font-medium">
+            <Link
+              href="#features"
+              className="text-gray-600 hover:text-primary transition-colors font-medium"
+            >
               Features
             </Link>
-            <Link href="#how-it-works" className="text-gray-600 hover:text-primary transition-colors font-medium">
+            <Link
+              href="#how-it-works"
+              className="text-gray-600 hover:text-primary transition-colors font-medium"
+            >
               How it Works
             </Link>
-            <Link href="/pricing" className="text-gray-600 hover:text-primary transition-colors font-medium">
+            <Link
+              href="/pricing"
+              className="text-gray-600 hover:text-primary transition-colors font-medium"
+            >
               Pricing
             </Link>
-            <Link href="/blog" className="text-gray-600 hover:text-primary transition-colors font-medium">
+            <Link
+              href="/blog"
+              className="text-gray-600 hover:text-primary transition-colors font-medium"
+            >
               Blog
             </Link>
           </nav>
@@ -52,7 +64,7 @@ export function Header() {
             ) : (
               <>
                 <Link href="/login">
-                  <Button  className="text-gray-600 hover:text-primary transition-all rounded-full px-5">
+                  <Button className="text-gray-600 hover:text-primary transition-all rounded-full px-5">
                     Log in
                   </Button>
                 </Link>
@@ -66,24 +78,47 @@ export function Header() {
           </div>
 
           {/* Mobile Menu Button */}
-          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-gray-600 focus:outline-none">
-            {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="md:hidden text-gray-600 focus:outline-none"
+          >
+            {menuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
           </button>
         </div>
 
         {/* Mobile Nav */}
         {menuOpen && (
           <nav className="md:hidden mt-4 space-y-4 pb-4 border-t border-gray-200 pt-4">
-            <Link href="#features" onClick={() => setMenuOpen(false)} className="block text-gray-700 hover:text-primary font-medium">
+            <Link
+              href="#features"
+              onClick={() => setMenuOpen(false)}
+              className="block text-gray-700 hover:text-primary font-medium"
+            >
               Features
             </Link>
-            <Link href="#how-it-works" onClick={() => setMenuOpen(false)} className="block text-gray-700 hover:text-primary font-medium">
+            <Link
+              href="#how-it-works"
+              onClick={() => setMenuOpen(false)}
+              className="block text-gray-700 hover:text-primary font-medium"
+            >
               How it Works
             </Link>
-            <Link href="/pricing" onClick={() => setMenuOpen(false)} className="block text-gray-700 hover:text-primary font-medium">
+            <Link
+              href="/pricing"
+              onClick={() => setMenuOpen(false)}
+              className="block text-gray-700 hover:text-primary font-medium"
+            >
               Pricing
             </Link>
-            <Link href="/blog" onClick={() => setMenuOpen(false)} className="block text-gray-700 hover:text-primary font-medium">
+            <Link
+              href="/blog"
+              onClick={() => setMenuOpen(false)}
+              className="block text-gray-700 hover:text-primary font-medium"
+            >
               Blog
             </Link>
             <div className="flex flex-col gap-2 pt-2">
@@ -96,7 +131,7 @@ export function Header() {
               ) : (
                 <>
                   <Link href="/login">
-                    <Button  className="w-full text-gray-700 hover:text-primary rounded-full">
+                    <Button className="w-full text-gray-700 hover:text-primary rounded-full">
                       Log in
                     </Button>
                   </Link>
@@ -112,5 +147,5 @@ export function Header() {
         )}
       </div>
     </header>
-  )
+  );
 }

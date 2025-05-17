@@ -3,10 +3,12 @@ export function TrustedBy() {
     <section className="py-12 bg-white border-y border-gray-100">
       <div className="container px-4 mx-auto">
         <div className="text-center mb-8">
-          <h2 className="text-lg font-medium text-neutral-gray">Trusted by educators and parents worldwide</h2>
+          <h2 className="text-lg font-medium text-neutral-gray">
+            Trusted by educators and parents worldwide
+          </h2>
         </div>
         <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
-          { [
+          {[
             { name: "Oakridge Academy", logo: "OA" },
             { name: "Bright Future Schools", logo: "BFS" },
             { name: "Learning Tree Institute", logo: "LTI" },
@@ -19,9 +21,9 @@ export function TrustedBy() {
               </div>
               <span className="font-medium text-dark-gray">{partner.name}</span>
             </div>
-          )) }
+          ))}
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -1,5 +1,5 @@
 import { drizzle } from "drizzle-orm/neon-serverless";
-import { Pool } from '@neondatabase/serverless';
+import { Pool } from "@neondatabase/serverless";
 import * as schema from "./schema";
 
 if (!process.env.DATABASE_URL) {
@@ -19,7 +19,7 @@ export * from "./schema";
 export async function checkConnection() {
   try {
     const result = await pool.connect();
-    const version = await result.query('SELECT version();');
+    const version = await result.query("SELECT version();");
     result.release();
     return { ok: true, version: version.rows[0].version };
   } catch (error) {

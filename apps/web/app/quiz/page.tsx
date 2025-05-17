@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { QuizView } from '../components/QuizView';
+import { QuizView } from "../components/QuizView";
 
 // This would typically come from your API
 const sampleQuestions = [
@@ -11,9 +11,9 @@ const sampleQuestions = [
       "To pass tests",
       "To memorize facts",
       "To understand and apply knowledge",
-      "To get good grades"
+      "To get good grades",
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
   },
   // Add more sample questions as needed
 ];
@@ -21,7 +21,7 @@ const sampleQuestions = [
 export default function QuizPage() {
   const handleQuizSubmit = (answers: number[]) => {
     // Handle quiz submission
-    console.log('Quiz answers:', answers);
+    console.log("Quiz answers:", answers);
   };
 
   return (
@@ -35,11 +35,8 @@ export default function QuizPage() {
             Answer the questions below to assess your understanding
           </p>
         </div>
-        <QuizView 
-          questions={sampleQuestions} 
-          onSubmit={handleQuizSubmit}
-        />
+        <QuizView questions={sampleQuestions} onSubmit={handleQuizSubmit} />
       </div>
     </div>
-  )
+  );
 }

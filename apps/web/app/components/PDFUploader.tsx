@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { useDropzone } from 'react-dropzone';
-import { Upload, FileText } from 'lucide-react';
+import { useState, useCallback } from "react";
+import { useDropzone } from "react-dropzone";
+import { Upload, FileText } from "lucide-react";
 
 export function PDFUploader() {
   const [file, setFile] = useState<File | null>(null);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const uploadedFile = acceptedFiles[0];
-    if (uploadedFile?.type === 'application/pdf') {
+    if (uploadedFile?.type === "application/pdf") {
       setFile(uploadedFile);
     }
   }, []);
@@ -17,7 +17,7 @@ export function PDFUploader() {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'application/pdf': ['.pdf'],
+      "application/pdf": [".pdf"],
     },
     maxFiles: 1,
   });
@@ -27,7 +27,7 @@ export function PDFUploader() {
       <div
         {...getRootProps()}
         className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
-          ${isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-blue-400'}`}
+          ${isDragActive ? "border-blue-500 bg-blue-50" : "border-gray-300 hover:border-blue-400"}`}
       >
         <input {...getInputProps()} />
         <div className="flex flex-col items-center space-y-4">
@@ -43,9 +43,7 @@ export function PDFUploader() {
             <>
               <Upload className="h-12 w-12 text-gray-400" />
               <p className="text-lg font-medium">Drop your PDF here</p>
-              <p className="text-sm text-gray-500">
-                or click to select a file
-              </p>
+              <p className="text-sm text-gray-500">or click to select a file</p>
             </>
           )}
         </div>

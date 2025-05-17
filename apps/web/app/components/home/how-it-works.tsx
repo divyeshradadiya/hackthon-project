@@ -1,5 +1,5 @@
-import { Badge } from "@repo/ui/badge"
-import { Button } from "@repo/ui/button"
+import { Badge } from "@repo/ui/badge";
+import { Button } from "@repo/ui/button";
 import {
   Layers,
   Rocket,
@@ -9,18 +9,26 @@ import {
   Play,
   Brain,
   Star,
-  MousePointer
-} from "lucide-react"
+  MousePointer,
+} from "lucide-react";
 
 export function HowItWorks() {
   return (
-    <section className="py-20 bg-gradient-to-br from-sky-light to-white relative overflow-hidden" id="how-it-works">
+    <section
+      className="py-20 bg-gradient-to-br from-sky-light to-white relative overflow-hidden"
+      id="how-it-works"
+    >
       <div className="container px-4 mx-auto relative z-content">
         <div className="text-center mb-16">
-          <Badge className="mb-4 bg-primary/10 text-primary border-0 py-1.5 px-3">Simple process</Badge>
-          <h2 className="text-3xl md:text-4xl font-bold text-dark-gray mb-4">How MathQuest Works</h2>
+          <Badge className="mb-4 bg-primary/10 text-primary border-0 py-1.5 px-3">
+            Simple process
+          </Badge>
+          <h2 className="text-3xl md:text-4xl font-bold text-dark-gray mb-4">
+            How MathQuest Works
+          </h2>
           <p className="text-lg text-neutral-gray max-w-2xl mx-auto">
-            Our platform makes learning math intuitive and engaging through a simple four-step process
+            Our platform makes learning math intuitive and engaging through a
+            simple four-step process
           </p>
         </div>
 
@@ -34,7 +42,8 @@ export function HowItWorks() {
               {
                 icon: <Layers className="h-8 w-8" />,
                 title: "Personalized Assessment",
-                description: "We identify your strengths and areas for improvement",
+                description:
+                  "We identify your strengths and areas for improvement",
                 color: "primary",
               },
               {
@@ -67,8 +76,12 @@ export function HowItWorks() {
                     {index + 1}
                   </div>
                 </div>
-                <h4 className="text-xl font-bold text-dark-gray text-center">{step.title}</h4>
-                <p className="text-sm text-neutral-gray text-center mt-2">{step.description}</p>
+                <h4 className="text-xl font-bold text-dark-gray text-center">
+                  {step.title}
+                </h4>
+                <p className="text-sm text-neutral-gray text-center mt-2">
+                  {step.description}
+                </p>
               </div>
             ))}
           </div>
@@ -81,10 +94,12 @@ export function HowItWorks() {
               <Badge className="mb-4 bg-success/10 text-success border-0 py-1.5 px-3 w-fit">
                 Interactive learning
               </Badge>
-              <h3 className="text-2xl md:text-3xl font-bold text-dark-gray mb-4">See MathQuest in Action</h3>
+              <h3 className="text-2xl md:text-3xl font-bold text-dark-gray mb-4">
+                See MathQuest in Action
+              </h3>
               <p className="text-neutral-gray mb-6">
-                Watch how students engage with our interactive platform to master math concepts through games and
-                challenges.
+                Watch how students engage with our interactive platform to
+                master math concepts through games and challenges.
               </p>
               <ul className="space-y-4 mb-8">
                 {[
@@ -121,9 +136,13 @@ export function HowItWorks() {
                       <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
                         <Brain className="h-4 w-4 text-primary" />
                       </div>
-                      <span className="ml-2 font-medium text-sm">Fraction Master</span>
+                      <span className="ml-2 font-medium text-sm">
+                        Fraction Master
+                      </span>
                     </div>
-                    <Badge className="bg-success/20 text-success border-0">Level 3</Badge>
+                    <Badge className="bg-success/20 text-success border-0">
+                      Level 3
+                    </Badge>
                   </div>
 
                   <div className="flex-1 flex items-center justify-center opacity-50">
@@ -161,7 +180,9 @@ export function HowItWorks() {
               </div>
 
               {/* Floating elements */}
-              <div className="absolute top-10 left-10 text-4xl font-bold text-primary/10 animate-float-slow">+</div>
+              <div className="absolute top-10 left-10 text-4xl font-bold text-primary/10 animate-float-slow">
+                +
+              </div>
               <div
                 className="absolute bottom-10 right-10 text-4xl font-bold text-secondary/10 animate-float-slow"
                 style={{ animationDelay: "1s" }}
@@ -173,5 +194,5 @@ export function HowItWorks() {
         </div>
       </div>
     </section>
-  )
+  );
 }

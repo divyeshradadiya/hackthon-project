@@ -1,4 +1,4 @@
-import { LearningPlan } from '../components/LearningPlan';
+import { LearningPlan } from "../components/LearningPlan";
 
 // This would typically come from your API based on the PDF analysis
 const sampleLearningPlan = {
@@ -6,28 +6,29 @@ const sampleLearningPlan = {
   units: [
     {
       title: "Foundations of Machine Learning",
-      description: "Learn the basic concepts and terminology of machine learning",
+      description:
+        "Learn the basic concepts and terminology of machine learning",
       estimatedTime: "2 hours",
       resources: [
         {
           type: "video" as const,
           title: "What is Machine Learning?",
-          url: "https://example.com/video1"
+          url: "https://example.com/video1",
         },
         {
           type: "article" as const,
           title: "Key Machine Learning Concepts",
-          url: "https://example.com/article1"
+          url: "https://example.com/article1",
         },
         {
           type: "exercise" as const,
           title: "Basic Terminology Quiz",
-          url: "https://example.com/quiz1"
-        }
-      ]
+          url: "https://example.com/quiz1",
+        },
+      ],
     },
     // Add more units as needed
-  ]
+  ],
 };
 
 export default function LearnPage() {
@@ -42,11 +43,11 @@ export default function LearnPage() {
             Follow this personalized learning plan to master the content
           </p>
         </div>
-        <LearningPlan 
+        <LearningPlan
           topic={sampleLearningPlan.topic}
           units={sampleLearningPlan.units}
         />
       </div>
     </div>
-  )
+  );
 }

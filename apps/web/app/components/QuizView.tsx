@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 interface Question {
   id: number;
@@ -15,7 +15,9 @@ interface QuizViewProps {
 }
 
 export function QuizView({ questions, onSubmit }: QuizViewProps) {
-  const [answers, setAnswers] = useState<number[]>(new Array(questions.length).fill(-1));
+  const [answers, setAnswers] = useState<number[]>(
+    new Array(questions.length).fill(-1),
+  );
   const [currentQuestion, setCurrentQuestion] = useState(0);
 
   const handleAnswer = (questionIndex: number, answerIndex: number) => {
@@ -53,7 +55,7 @@ export function QuizView({ questions, onSubmit }: QuizViewProps) {
         {questions.map((question, qIndex) => (
           <div
             key={question.id}
-            className={qIndex === currentQuestion ? 'block' : 'hidden'}
+            className={qIndex === currentQuestion ? "block" : "hidden"}
           >
             <h3 className="text-xl font-medium mb-4">{question.question}</h3>
             <div className="space-y-3">
@@ -64,8 +66,8 @@ export function QuizView({ questions, onSubmit }: QuizViewProps) {
                   className={`w-full p-4 text-left rounded-lg border-2 transition-all
                     ${
                       answers[qIndex] === oIndex
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-200 hover:border-blue-300'
+                        ? "border-blue-500 bg-blue-50"
+                        : "border-gray-200 hover:border-blue-300"
                     }`}
                 >
                   {option}
@@ -86,7 +88,11 @@ export function QuizView({ questions, onSubmit }: QuizViewProps) {
         </button>
         {currentQuestion < questions.length - 1 ? (
           <button
-            onClick={() => setCurrentQuestion((prev) => Math.min(questions.length - 1, prev + 1))}
+            onClick={() =>
+              setCurrentQuestion((prev) =>
+                Math.min(questions.length - 1, prev + 1),
+              )
+            }
             className="px-6 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600"
           >
             Next

@@ -1,16 +1,21 @@
-import { Badge } from "@repo/ui/badge"
-import { Card } from "@repo/ui/card"
-import { Star, BarChart, CheckCircle, Users } from "lucide-react"
+import { Badge } from "@repo/ui/badge";
+import { Card } from "@repo/ui/card";
+import { Star, BarChart, CheckCircle, Users } from "lucide-react";
 
 export function Testimonials() {
   return (
     <section className="py-20 bg-white">
       <div className="container px-4 mx-auto">
         <div className="text-center mb-16">
-          <Badge className="mb-4 bg-destructive/10 text-destructive border-0 py-1.5 px-3">Success stories</Badge>
-          <h2 className="text-3xl md:text-4xl font-bold text-dark-gray mb-4">What Our Students Say</h2>
+          <Badge className="mb-4 bg-destructive/10 text-destructive border-0 py-1.5 px-3">
+            Success stories
+          </Badge>
+          <h2 className="text-3xl md:text-4xl font-bold text-dark-gray mb-4">
+            What Our Students Say
+          </h2>
           <p className="text-lg text-neutral-gray max-w-2xl mx-auto">
-            Join thousands of students who have transformed their relationship with math through MathQuest
+            Join thousands of students who have transformed their relationship
+            with math through MathQuest
           </p>
         </div>
 
@@ -48,13 +53,20 @@ export function Testimonials() {
               key={index}
               className={`bg-white rounded-xl shadow-md border border-${testimonial.color}/20 p-6 hover:shadow-lg transition-all duration-300 group overflow-hidden relative h-full`}
             >
-              <div className={`absolute top-0 left-0 w-full h-1 bg-${testimonial.color}/50`}></div>
+              <div
+                className={`absolute top-0 left-0 w-full h-1 bg-${testimonial.color}/50`}
+              ></div>
               <div className="flex mb-4">
                 {[...Array(testimonial.stars)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 text-secondary fill-secondary" />
+                  <Star
+                    key={i}
+                    className="h-5 w-5 text-secondary fill-secondary"
+                  />
                 ))}
               </div>
-              <p className="text-dark-gray mb-6 italic">"{testimonial.quote}"</p>
+              <p className="text-dark-gray mb-6 italic">
+                "{testimonial.quote}"
+              </p>
               <div className="flex items-center mt-auto pt-4 border-t border-gray-100">
                 <div
                   className={`w-10 h-10 rounded-full bg-${testimonial.color}/20 flex items-center justify-center text-${testimonial.color} font-bold mr-3`}
@@ -62,8 +74,12 @@ export function Testimonials() {
                   {testimonial.avatar}
                 </div>
                 <div>
-                  <div className="font-bold text-dark-gray">{testimonial.name}</div>
-                  <div className="text-sm text-neutral-gray">{testimonial.improvement}</div>
+                  <div className="font-bold text-dark-gray">
+                    {testimonial.name}
+                  </div>
+                  <div className="text-sm text-neutral-gray">
+                    {testimonial.improvement}
+                  </div>
                 </div>
               </div>
             </Card>
@@ -73,10 +89,26 @@ export function Testimonials() {
         {/* Stats */}
         <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
-            { value: "95%", label: "Student Satisfaction", icon: <Star className="h-6 w-6 text-secondary" /> },
-            { value: "87%", label: "Grade Improvement", icon: <BarChart className="h-6 w-6 text-primary" /> },
-            { value: "10M+", label: "Problems Solved", icon: <CheckCircle className="h-6 w-6 text-success" /> },
-            { value: "50K+", label: "Active Students", icon: <Users className="h-6 w-6 text-destructive" /> },
+            {
+              value: "95%",
+              label: "Student Satisfaction",
+              icon: <Star className="h-6 w-6 text-secondary" />,
+            },
+            {
+              value: "87%",
+              label: "Grade Improvement",
+              icon: <BarChart className="h-6 w-6 text-primary" />,
+            },
+            {
+              value: "10M+",
+              label: "Problems Solved",
+              icon: <CheckCircle className="h-6 w-6 text-success" />,
+            },
+            {
+              value: "50K+",
+              label: "Active Students",
+              icon: <Users className="h-6 w-6 text-destructive" />,
+            },
           ].map((stat, index) => (
             <div
               key={index}
@@ -85,12 +117,14 @@ export function Testimonials() {
               <div className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center mx-auto mb-4">
                 {stat.icon}
               </div>
-              <div className="text-3xl font-bold text-dark-gray mb-1">{stat.value}</div>
+              <div className="text-3xl font-bold text-dark-gray mb-1">
+                {stat.value}
+              </div>
               <div className="text-sm text-neutral-gray">{stat.label}</div>
             </div>
           ))}
         </div>
       </div>
     </section>
-  )
+  );
 }

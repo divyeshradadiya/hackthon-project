@@ -6,10 +6,19 @@ export async function getUsers() {
   return allUsers;
 }
 
-export async function createUser({ name, email }: { name: string; email: string }) {
-  const newUser = await db.insert(users).values({
-    name,
-    email,
-  }).returning();
+export async function createUser({
+  name,
+  email,
+}: {
+  name: string;
+  email: string;
+}) {
+  const newUser = await db
+    .insert(users)
+    .values({
+      name,
+      email,
+    })
+    .returning();
   return newUser[0];
 }

@@ -1,4 +1,4 @@
-import { PDFUploader } from '../components/PDFUploader';
+import { PDFUploader } from "../components/PDFUploader";
 
 export default function UploadPage() {
   return (
@@ -9,11 +9,12 @@ export default function UploadPage() {
             Upload Your PDF
           </h1>
           <p className="mt-4 text-lg text-gray-600">
-            Upload your document and we'll generate an intelligent learning experience for you
+            Upload your document and we'll generate an intelligent learning
+            experience for you
           </p>
         </div>
         <PDFUploader />
       </div>
     </div>
-  )
+  );
 }

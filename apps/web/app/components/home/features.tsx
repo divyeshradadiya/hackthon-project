@@ -1,6 +1,6 @@
-import { Badge } from "@repo/ui/badge"
-import { Card } from "@repo/ui/card"
-import { Button } from "@repo/ui/button"
+import { Badge } from "@repo/ui/badge";
+import { Card } from "@repo/ui/card";
+import { Button } from "@repo/ui/button";
 import {
   Lightbulb,
   Gamepad2,
@@ -9,20 +9,23 @@ import {
   Brain,
   BarChart,
   ChevronRight,
-} from "lucide-react"
+} from "lucide-react";
 
 export function Features() {
   return (
     <section className="py-20 relative overflow-hidden" id="features">
       <div className="container px-4 mx-auto relative z-content">
         <div className="text-center mb-16">
-          <Badge className="mb-4 bg-secondary/10 text-secondary border-0 py-1.5 px-3">Why students love us</Badge>
+          <Badge className="mb-4 bg-secondary/10 text-secondary border-0 py-1.5 px-3">
+            Why students love us
+          </Badge>
           <h2 className="text-3xl md:text-4xl font-bold text-dark-gray mb-4">
             Learning Math Has Never Been This Fun
           </h2>
           <p className="text-lg text-neutral-gray max-w-2xl mx-auto">
-            Our platform combines engaging content with game mechanics to create an immersive learning experience that
-            students actually look forward to.
+            Our platform combines engaging content with game mechanics to create
+            an immersive learning experience that students actually look forward
+            to.
           </p>
         </div>
 
@@ -83,10 +86,15 @@ export function Features() {
               >
                 {feature.icon}
               </div>
-              <h3 className={`text-xl font-bold text-${feature.color} mb-2`}>{feature.title}</h3>
+              <h3 className={`text-xl font-bold text-${feature.color} mb-2`}>
+                {feature.title}
+              </h3>
               <p className="text-neutral-gray">{feature.description}</p>
               <div className="mt-4 pt-4 border-t border-gray-100 flex justify-end">
-                <Button variant="ghost" className={`text-${feature.color} p-0 h-auto group-hover:underline`}>
+                <Button
+                  variant="ghost"
+                  className={`text-${feature.color} p-0 h-auto group-hover:underline`}
+                >
                   Learn more <ChevronRight className="h-4 w-4 ml-1" />
                 </Button>
               </div>
@@ -101,5 +109,5 @@ export function Features() {
         <div className="absolute bottom-1/3 left-0 w-96 h-96 bg-secondary/5 rounded-full"></div>
       </div>
     </section>
-  )
+  );
 }

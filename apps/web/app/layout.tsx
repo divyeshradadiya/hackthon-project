@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { ClerkProvider } from '@clerk/nextjs';
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import { ThemeProvider } from "./components/theme-provider";
 
@@ -26,12 +26,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ClerkProvider>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-        <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}>
-          {children}
-        </body>
-                </ThemeProvider>
-
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
+          >
+            {children}
+          </body>
+        </ThemeProvider>
       </ClerkProvider>
     </html>
   );

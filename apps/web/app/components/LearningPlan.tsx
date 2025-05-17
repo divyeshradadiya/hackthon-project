@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
 interface LearningUnit {
   title: string;
   description: string;
   estimatedTime: string;
   resources: Array<{
-    type: 'video' | 'article' | 'exercise';
+    type: "video" | "article" | "exercise";
     title: string;
     url?: string;
   }>;
@@ -47,7 +47,7 @@ export function LearningPlan({ topic, units }: LearningPlanProps) {
                   className="flex items-center p-3 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors"
                 >
                   <div className="mr-4">
-                    {resource.type === 'video' && (
+                    {resource.type === "video" && (
                       <svg
                         className="w-6 h-6 text-red-500"
                         fill="none"
@@ -68,7 +68,7 @@ export function LearningPlan({ topic, units }: LearningPlanProps) {
                         />
                       </svg>
                     )}
-                    {resource.type === 'article' && (
+                    {resource.type === "article" && (
                       <svg
                         className="w-6 h-6 text-blue-500"
                         fill="none"
@@ -83,7 +83,7 @@ export function LearningPlan({ topic, units }: LearningPlanProps) {
                         />
                       </svg>
                     )}
-                    {resource.type === 'exercise' && (
+                    {resource.type === "exercise" && (
                       <svg
                         className="w-6 h-6 text-green-500"
                         fill="none"
