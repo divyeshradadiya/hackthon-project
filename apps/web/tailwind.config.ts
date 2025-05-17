@@ -1,12 +1,12 @@
 import type { Config } from "tailwindcss";
 
 const config = {
+  darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
-    "../../packages/ui/**/*.{ts,tsx}",
     "*.{js,ts,jsx,tsx,mdx}",
   ],
   prefix: "",
@@ -23,19 +23,27 @@ const config = {
       },
     },
     extend: {
-      colors: {
+            colors: { 
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        background: {
+          DEFAULT: "hsl(var(--background))",
+          dark: "hsl(var(--background-dark))",
+        },
+        foreground: {
+          DEFAULT: "hsl(var(--foreground))",
+          dark: "hsl(var(--foreground-dark))",
+        },
         primary: {
           DEFAULT: "#0057FF",
           foreground: "hsl(var(--primary-foreground))",
+          dark: "#338FFF",
         },
         secondary: {
           DEFAULT: "#FFD633",
           foreground: "hsl(var(--secondary-foreground))",
+          dark: "#FFE066",
         },
         destructive: {
           DEFAULT: "#FF5A5F",
@@ -53,9 +61,6 @@ const config = {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
-        "sky-light": "#E8F4FF",
-        "dark-gray": "#2C2C2C",
-        "neutral-gray": "#8C8C8C",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -67,6 +72,7 @@ const config = {
         poppins: ["var(--font-poppins)"],
         inter: ["var(--font-inter)"],
         "space-mono": ["var(--font-space-mono)"],
+        ibmPlex: ["var(--font-ibm-plex-sans)", "sans-serif"],
         mono: ["var(--font-geist-mono)"],
         sans: ["var(--font-geist-sans)"],
       },
