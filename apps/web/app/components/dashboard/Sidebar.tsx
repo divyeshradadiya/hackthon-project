@@ -1,42 +1,39 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import Link from "next/link";
-import { Menu, MoonIcon, Sun, X } from "lucide-react";
-import { useTheme } from "next-themes";
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { Menu, MoonIcon, Sun, X } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 
 const sidebarItems = [
-  { icon: "🏠", name: "Home", href: "/" },
-  { icon: "📚", name: "My Courses", href: "/courses" },
-  { icon: "📖", name: "Learn", href: "/learn" },
-  { icon: "🧠", name: "Quiz Me", href: "/quiz" },
-  { icon: "📈", name: "Dashboard", href: "/dashboard" },
-  { icon: "⚙️", name: "Settings", href: "/settings" },
+  { icon: '🏠', name: 'Home', href: '/dashboard' },
+  { icon: '📚', name: 'My Courses', href: '/courses' },
+  { icon: '📖', name: 'Learning', href: '/learning' },
+  { icon: '🧠', name: 'Quiz Me', href: '/quiz' },
+  { icon: '⚙️', name: 'Settings', href: '/settings' },
 ];
 
 const Sidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(true);
-
   const { theme, setTheme } = useTheme();
 
-  const toggleSidebar = () => setIsOpen((prev) => !prev);
+  const toggleSidebar = () => setIsOpen(prev => !prev);
 
   return (
-    <aside
-      className={`h-screen transition-all duration-300 ease-in-out flex flex-col border-r ${
-        isOpen ? "w-64" : "w-20"
-      } bg-white text-gray-900 dark:bg-gray-900 dark:text-white`}
+    <div
+      className={`h-screen transition-all duration-300 ease-in-out flex flex-col border-r bg-white text-gray-900 dark:bg-gray-900 dark:text-white ${
+        isOpen ? 'w-64' : 'w-20'
+      } `}
     >
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b dark:border-gray-700 border-gray-200">
         {isOpen && (
-          <h1 className="text-xl font-bold tracking-tight whitespace-nowrap">
-            Maths Platform
-          </h1>
+          <h1 className="text-xl font-bold tracking-tight whitespace-nowrap"></h1>
         )}
         <button
           onClick={toggleSidebar}
-          aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
+          aria-label={isOpen ? 'Close sidebar' : 'Open sidebar'}
           className="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white focus:outline-none"
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -53,22 +50,32 @@ const Sidebar: React.FC = () => {
                 className="flex items-center gap-3 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               >
                 <span className="text-lg">{icon}</span>
-                <span className={`${!isOpen && "hidden"} whitespace-nowrap`}>
-                  {name}
-                </span>
+                <span className={`${!isOpen && 'hidden'} whitespace-nowrap`}>{name}</span>
               </Link>
             </li>
           ))}
-          <button
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="p-2 text-xl text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
-            title="Toggle Dark Mode"
-          >
-            {theme === "dark" ? <Sun /> : <MoonIcon />}
-          </button>
         </ul>
       </nav>
-    </aside>
+
+        <button
+          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          className="p-2 text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition"
+          title="Toggle Theme"
+        >
+          {theme === 'dark' ? <Sun className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
+        </button>
+      {/* Footer / Theme Toggle & Auth */}
+      <div className="p-4 border-t dark:border-gray-700 border-gray-200 flex items-center justify-between">
+        <div>
+          <SignedIn>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
+          <SignedOut>
+            <SignInButton mode="modal" />
+          </SignedOut>
+        </div>
+      </div>
+    </div>
   );
 };
 
