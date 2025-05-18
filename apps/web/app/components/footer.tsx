@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link"
 import { Button } from "@repo/ui/button"
 import { Brain, Globe } from "lucide-react"
@@ -109,7 +111,7 @@ export function Footer() {
 
         <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center">
           <div className="text-sm text-neutral-gray mb-4 md:mb-0">
-            © {new Date().getFullYear()} MathQuest. All rights reserved.
+            © 2024 MathQuest. All rights reserved.
           </div>
           <div className="flex items-center gap-8">
             <div className="flex gap-6">

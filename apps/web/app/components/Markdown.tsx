@@ -5,8 +5,10 @@ import { createPortal } from "react-dom";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { CodeBlock } from "./CodeBlock";
+import { ArrowUpRight, LinkIcon } from "lucide-react";
 
 const NonMemoizedMarkdown = ({ children }: { children: string }) => {
+  console.log(children)
   return (
     <ReactMarkdown remarkPlugins={remarkPlugins} components={components}>
       {children}
@@ -65,145 +67,16 @@ const components: Partial<Components> = {
     );
   },
   img: function Img({ src, alt }) {
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [isZoomed, setIsZoomed] = useState(false);
-
-    if (!src) return null;
-
-    const handleDownload = () => {
-      fetch(src)
-        .then((response) => response.blob())
-        .then((blob) => {
-          const url = window.URL.createObjectURL(blob);
-          const link = document.createElement("a");
-          link.href = url;
-          link.download = alt || "image.png";
-          link.click();
-          window.URL.revokeObjectURL(url);
-        })
-        .catch((error) => console.error("Error downloading the image:", error));
-    };
-
-    const toggleZoom = () => setIsZoomed(!isZoomed);
-
+   
     return (
-      <>
-        <div className="relative my-6 overflow-hidden rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
-          <div className="relative overflow-hidden">
-            <Image
-              src={src}
-              alt={alt || "Image"}
-              className={`h-auto w-full transition-all duration-300 ${isLoaded ? "opacity-100" : "opacity-0"}`}
-              loading="lazy"
-              layout="responsive"
-              width={600}
-              height={400}
-              objectFit="contain"
-              onLoad={() => setIsLoaded(true)}
-              onClick={toggleZoom}
-            />
-            {!isLoaded && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
-                <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-500"></div>
-              </div>
-            )}
-          </div>
-
-          {isLoaded && (
-            <div className="flex flex-col border-t border-gray-200 bg-gray-50 px-4 py-3 dark:border-gray-700 dark:bg-gray-800/50 sm:flex-row sm:items-center sm:justify-between">
-              <div className="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300 sm:mb-0">
-                {alt && <span>{alt}</span>}
-              </div>
-              <div className="flex space-x-2">
-                <button
-                  onClick={toggleZoom}
-                  className="inline-flex items-center rounded-md bg-white px-3 py-1.5 text-xs font-medium text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-200 dark:ring-gray-600 dark:hover:bg-gray-600"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="mr-1.5 h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <title>View</title>
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
-                    />
-                  </svg>
-                  View
-                </button>
-                <button
-                  onClick={handleDownload}
-                  className="inline-flex items-center rounded-md bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700 shadow-sm ring-1 ring-inset ring-blue-700/10 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 dark:ring-blue-700/30 dark:hover:bg-blue-900/40"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="mr-1.5 h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <title>Download</title>
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                    />
-                  </svg>
-                  Download
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {isZoomed &&
-          createPortal(
-            <div
-              className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/90 p-4"
-              onClick={toggleZoom}
-            >
-              <div
-                className="relative z-50 max-h-[90vh] max-w-[90vw] overflow-auto"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Image
-                  src={src}
-                  alt={alt || "Image"}
-                  className="z-50 h-auto max-h-[85vh] w-auto rounded-lg object-contain"
-                  width={1200}
-                  height={900}
-                />
-                <button
-                  className="absolute right-2 top-2 z-50 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
-                  onClick={toggleZoom}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <title>Close</title>
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>,
-            document.body,
-          )}
-      </>
+      <div className="relative w-full h-0 pb-[56.25%]">
+        <Image
+          src={src || ""}
+          alt={alt || ""}
+          fill
+          className="absolute top-0 left-0 w-full h-full object-cover rounded-lg"
+        />
+      </div>
     );
   },
   // pre: ({ children }) => (
@@ -218,16 +91,35 @@ const components: Partial<Components> = {
     </p>
   ),
   table: ({ children }) => (
-    <table className="w-full border-collapse">{children}</table>
+    <table className="my-2 w-full !text-[14px] border-collapse">{children}</table>
   ),
   thead: ({ children }) => (
-    <thead className="bg-gray-50 dark:bg-gray-800">{children}</thead>
+    <thead className="bg-gray-50 !text-[14px] dark:bg-gray-800">{children}</thead>
   ),
   th: ({ children }) => (
-    <th className="border border-gray-300 dark:border-gray-600 p-2">
+    <th className="border !text-[14px] border-gray-300 dark:border-gray-600 p-2">
       {children}
     </th>
   ),
+    // Custom link renderer for react-markdown
+    a: ({ href, children, ...props }) => {
+      if (href) {
+        return (
+          <Link
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-blue-500 hover:text-blue-600"
+            {...props}
+          >
+            <LinkIcon className="w-4 h-4" />
+            {children}
+            <ArrowUpRight className="w-4 h-4" />
+          </Link>
+        );
+      }
+      return <></>;
+    },
   td: ({ children }) => (
     <td className="border border-gray-300 dark:border-gray-600 p-2">
       {children}
@@ -270,19 +162,19 @@ const components: Partial<Components> = {
       </span>
     );
   },
-  a: ({ node, children, ...props }) => {
-    return (
-      // @ts-expect-error
-      <Link
-        className="text-blue-600 hover:underline dark:text-blue-400"
-        target="_blank"
-        rel="noreferrer"
-        {...props}
-      >
-        {children}
-      </Link>
-    );
-  },
+  // a: ({ node, children, ...props }) => {
+  //   return (
+  //     // @ts-expect-error
+  //     <Link
+  //       className="text-blue-600 hover:underline dark:text-blue-400"
+  //       target="_blank"
+  //       rel="noreferrer"
+  //       {...props}
+  //     >
+  //       {children}
+  //     </Link>
+  //   );
+  // },
   h1: ({ node, children, ...props }) => {
     return (
       <h3
@@ -296,7 +188,7 @@ const components: Partial<Components> = {
   h2: ({ node, children, ...props }) => {
     return (
       <h3
-        className="mt-1 !text-[14px] font-semibold text-black dark:text-white"
+        className="mt-2 !text-[14px] font-semibold text-black dark:text-white"
         {...props}
       >
         {children}

@@ -1,19 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@repo/ui";
 import { Brain, Menu, X } from "lucide-react";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Default to false
-
-  useEffect(() => {
-    // Simulate fetching authentication status on the client
-    const authStatus = false; // Replace with actual logic
-    setIsAuthenticated(authStatus);
-  }, []);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-white/80 via-white/60 to-white/80 backdrop-blur-xl border-b border-gray-200 shadow-sm">
@@ -55,26 +49,26 @@ export function Header() {
 
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center gap-4">
-            {isAuthenticated ? (
+            <SignedIn>
               <Link href="/dashboard">
                 <Button className="bg-gradient-to-r from-primary to-indigo-600 hover:opacity-90 text-white rounded-full px-6">
                   Go to Dashboard
                 </Button>
               </Link>
-            ) : (
-              <>
-                <Link href="/login">
-                  <Button className="text-gray-600 hover:text-primary transition-all rounded-full px-5">
-                    Log in
-                  </Button>
-                </Link>
-                <Link href="/signup">
-                  <Button className="bg-gradient-to-r from-primary to-indigo-600 hover:opacity-90 text-white rounded-full px-6">
-                    Get Started
-                  </Button>
-                </Link>
-              </>
-            )}
+              <UserButton afterSignOutUrl="/" />
+            </SignedIn>
+            <SignedOut>
+              <SignInButton mode="modal">
+                <Button className="text-gray-600 hover:text-primary transition-all rounded-full px-5">
+                  Log in
+                </Button>
+              </SignInButton>
+              <Link href="/signup">
+                <Button className="bg-gradient-to-r from-primary to-indigo-600 hover:opacity-90 text-white rounded-full px-6">
+                  Get Started
+                </Button>
+              </Link>
+            </SignedOut>
           </div>
 
           {/* Mobile Menu Button */}
@@ -122,26 +116,26 @@ export function Header() {
               Blog
             </Link>
             <div className="flex flex-col gap-2 pt-2">
-              {isAuthenticated ? (
+              <SignedIn>
                 <Link href="/dashboard">
                   <Button className="w-full bg-gradient-to-r from-primary to-indigo-600 hover:opacity-90 text-white rounded-full">
                     Go to Dashboard
                   </Button>
                 </Link>
-              ) : (
-                <>
-                  <Link href="/login">
-                    <Button className="w-full text-gray-700 hover:text-primary rounded-full">
-                      Log in
-                    </Button>
-                  </Link>
-                  <Link href="/signup">
-                    <Button className="w-full bg-gradient-to-r from-primary to-indigo-600 hover:opacity-90 text-white rounded-full">
-                      Get Started
-                    </Button>
-                  </Link>
-                </>
-              )}
+                <UserButton afterSignOutUrl="/" />
+              </SignedIn>
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <Button className="w-full text-gray-700 hover:text-primary rounded-full">
+                    Log in
+                  </Button>
+                </SignInButton>
+                <Link href="/signup">
+                  <Button className="w-full bg-gradient-to-r from-primary to-indigo-600 hover:opacity-90 text-white rounded-full">
+                    Get Started
+                  </Button>
+                </Link>
+              </SignedOut>
             </div>
           </nav>
         )}

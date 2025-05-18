@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
-import { ThemeProvider } from "./components/theme-provider";
-import { TanstackQueryProvider } from "./providers/query-client-provider";
+import { Providers } from "./providers";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,23 +24,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <ClerkProvider>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
-          >
-            <TanstackQueryProvider>
-              {children}
-            </TanstackQueryProvider>
-          </body>
-        </ThemeProvider>
-      </ClerkProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}>
+        <ClerkProvider>
+          <Providers>
+            {children}
+          </Providers>
+        </ClerkProvider>
+      </body>
     </html>
   );
 }
