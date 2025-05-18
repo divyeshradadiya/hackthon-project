@@ -1,6 +1,7 @@
-import { courses, db, modules } from "..";
 import { OpenAI } from "openai";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
+import { courses, modules } from "../schema";
+import { db } from "..";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -19,7 +20,7 @@ export async function createCourse({ learningInput, userId }: CreateCourseInput)
     throw new Error("learningInput is required");
   }
 
-  // 1. Phase-1: get module titles & summaries
+  // -------- Phase 1: Generate module titles and summaries --------
   const listPrompt = `
 You are an expert AI course generator.
 
@@ -30,7 +31,7 @@ Return **only** a JSON array of objects, each with:
 - "description": one-line summary
 
 Do **not** include details yet, and do **not** wrap in Markdown fences.
-`;
+  `.trim();
 
   const listResp = await openai.chat.completions.create({
     model: "gpt-4o-mini",
@@ -48,7 +49,7 @@ Do **not** include details yet, and do **not** wrap in Markdown fences.
     throw new Error("AI returned invalid module list");
   }
 
-  // 2. Insert course + placeholder modules
+  // -------- Phase 2: Insert course and placeholder modules --------
   const [course] = await db
     .insert(courses)
     .values({
@@ -72,7 +73,7 @@ Do **not** include details yet, and do **not** wrap in Markdown fences.
     )
     .returning();
 
-  // 3. Phase-2: Generate detailed content for modules
+  // -------- Phase 3: Generate detailed content for each module --------
   const makeDetails = async () => {
     const detailsPrompt = `
 You are an expert AI course generator.
@@ -92,7 +93,7 @@ Now return **only** a JSON object with exactly this shape:
 }
 
 - **Important**: Escape all backslashes and quotation marks so that this is valid JSON.
-`;
+    `.trim();
 
     const resp = await openai.chat.completions.create({
       model: "gpt-4o-mini",
@@ -105,7 +106,7 @@ Now return **only** a JSON object with exactly this shape:
       .replace(/^```(?:json)?\s*/, "")
       .replace(/\s*```$/, "");
 
-    // Sanitize stray backslashes before parse
+    // Sanitize stray backslashes before parsing
     raw = raw.replace(/\\(?!["\\/bfnrtu])/g, "\\\\");
 
     const parsed = JSON.parse(raw) as { details?: string[] };
@@ -117,7 +118,7 @@ Now return **only** a JSON object with exactly this shape:
 
   const detailsArray = await makeDetails();
 
-  // 4. Update modules with generated content
+  // -------- Phase 4: Update modules with detailed content --------
   await Promise.all(
     insertedModules.map((mod, idx) =>
       db
@@ -127,7 +128,7 @@ Now return **only** a JSON object with exactly this shape:
     )
   );
 
-  // 5. Return the complete course data
+  // -------- Final: Return full course data --------
   return {
     courseId: course.id,
     title: course.title,
@@ -139,4 +140,36 @@ Now return **only** a JSON object with exactly this shape:
       details: detailsArray[idx],
     })),
   };
+}
+
+
+export async function deleteCourse(courseId: string, userId: string) {
+  if (!courseId || !userId) {
+    throw new Error("courseId and userId are required");
+  }
+
+  // Ensure the course belongs to the user
+  const course = await db
+    .select()
+    .from(courses)
+    .where(and(eq(courses.id, courseId), eq(courses.userId, userId)))
+    .then(rows => rows[0]);
+
+  if (!course) {
+    throw new Error("Course not found or access denied");
+  }
+
+  // Delete modules and return deleted rows
+  const deletedModules = await db
+    .delete(modules)
+    .where(eq(modules.courseId, courseId))
+    .returning();
+
+  // Delete the course and return deleted row
+  const deletedCourse = await db
+    .delete(courses)
+    .where(eq(courses.id, courseId))
+    .returning();
+
+  return { success: true, deletedCourse, deletedModules };
 }
