@@ -1,31 +1,24 @@
-import Image, { type ImageProps } from "next/image";
-import { Button } from "@repo/ui/button";
-import styles from "./page.module.css";
-import { UserButton, SignInButton, useAuth } from "@clerk/nextjs";
-// import { useUser } from '@clerk/clerk-react';
+import { Header } from "./components/header"
+import { Hero } from "./components/home/hero"
+import { TrustedBy } from "./components/home/trusted-by"
+import { Features } from "./components/home/features"
+import { HowItWorks } from "./components/home/how-it-works"
+import { Testimonials } from "./components/home/testimonials"
+import { Cta } from "./components/home/cta"
+import { Footer } from "./components/footer"
 
-type Props = Omit<ImageProps, "src"> & {
-  srcLight: string;
-  srcDark: string;
-};
-
-const ThemeImage = (props: Props) => {
-  const { srcLight, srcDark, ...rest } = props;
-
+export default function LandingPage() {
   return (
-    <>
-      <Image {...rest} src={srcLight} className="imgLight" />
-      <Image {...rest} src={srcDark} className="imgDark" />
-    </>
-  );
-};
-
-export default function Home() {
-  // const { user, isSignedIn, isLoaded } = useUser();
-  // const {isSignedIn} = useAuth() // Replace with actual sign-in check
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}></main>
+    <div className="flex min-h-screen flex-col overflow-hidden">
+      <Header />
+      <Hero />
+      <TrustedBy />
+      <Features />
+      <HowItWorks />
+      <Testimonials />
+      <Cta />
+      <Footer />
     </div>
-  );
+  )
 }
+

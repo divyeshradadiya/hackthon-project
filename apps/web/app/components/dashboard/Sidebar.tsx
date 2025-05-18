@@ -1,0 +1,82 @@
+'use client';
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { Menu, MoonIcon, Sun, X } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+
+const sidebarItems = [
+  { icon: '🏠', name: 'Home', href: '/dashboard' },
+  { icon: '📚', name: 'My Courses', href: '/courses' },
+  { icon: '📖', name: 'Learning', href: '/learning' },
+  { icon: '🧠', name: 'Quiz Me', href: '/quiz' },
+  { icon: '⚙️', name: 'Settings', href: '/settings' },
+];
+
+const Sidebar: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(true);
+  const { theme, setTheme } = useTheme();
+
+  const toggleSidebar = () => setIsOpen(prev => !prev);
+
+  return (
+    <div
+      className={`h-screen transition-all duration-300 ease-in-out flex flex-col border-r bg-white text-gray-900 dark:bg-gray-900 dark:text-white ${
+        isOpen ? 'w-64' : 'w-20'
+      } `}
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between p-4 border-b dark:border-gray-700 border-gray-200">
+        {isOpen && (
+          <h1 className="text-xl font-bold tracking-tight whitespace-nowrap"></h1>
+        )}
+        <button
+          onClick={toggleSidebar}
+          aria-label={isOpen ? 'Close sidebar' : 'Open sidebar'}
+          className="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white focus:outline-none"
+        >
+          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+      </div>
+
+      {/* Navigation */}
+      <nav className="flex-1 overflow-y-auto p-2">
+        <ul className="space-y-1">
+          {sidebarItems.map(({ icon, name, href }) => (
+            <li key={name}>
+              <Link
+                href={href}
+                className="flex items-center gap-3 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              >
+                <span className="text-lg">{icon}</span>
+                <span className={`${!isOpen && 'hidden'} whitespace-nowrap`}>{name}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+        <button
+          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          className="p-2 text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition"
+          title="Toggle Theme"
+        >
+          {theme === 'dark' ? <Sun className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
+        </button>
+      {/* Footer / Theme Toggle & Auth */}
+      <div className="p-4 border-t dark:border-gray-700 border-gray-200 flex items-center justify-between">
+        <div>
+          <SignedIn>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
+          <SignedOut>
+            <SignInButton mode="modal" />
+          </SignedOut>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Sidebar;

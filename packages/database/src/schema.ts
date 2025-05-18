@@ -1,32 +1,34 @@
-import { 
-  pgTable, 
-  uuid, 
-  text, 
-  timestamp, 
-  boolean,
-  primaryKey,
-  varchar,
-  integer
-} from "drizzle-orm/pg-core";
-import { sql } from "drizzle-orm";
+import { relations } from "drizzle-orm";
+import { pgTable, uuid, varchar, text, timestamp } from "drizzle-orm/pg-core";
 
-export const users = pgTable("users", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  name: varchar("name", { length: 255 }).notNull(),
-  email: varchar("email", { length: 255 }).notNull().unique(),
-  isActive: boolean("is_active").default(true).notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
-});
-
-// Example of a related table with PostgreSQL-specific features
-export const posts = pgTable("posts", {
-  id: uuid("id").defaultRandom().primaryKey(),
+// Courses table
+export const courses = pgTable("courses", {
+  id: uuid("id").primaryKey().defaultRandom(),
   title: varchar("title", { length: 255 }).notNull(),
-  content: text("content").notNull(),
-  authorId: uuid("author_id").notNull().references(() => users.id, { onDelete: "cascade" }),
-  published: boolean("published").default(false).notNull(),
-  viewCount: integer("view_count").default(0).notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  learningInput: text("learning_input").notNull(),
+  userId: varchar("user_id", { length: 255 }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });
+
+// Modules table
+export const modules = pgTable("modules", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  content : text("content").notNull(),
+  courseId: uuid("course_id")
+    .notNull()
+    .references(() => courses.id, { onDelete: "cascade" }),
+});
+
+// Relations
+export const courseRelations = relations(courses, ({ many }) => ({
+  modules: many(modules),
+}));
+
+export const moduleRelations = relations(modules, ({ one }) => ({
+  course: one(courses, {
+    fields: [modules.courseId],
+    references: [courses.id],
+  }),
+}));

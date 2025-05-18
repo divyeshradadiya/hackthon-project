@@ -1,0 +1,1 @@
+ALTER TABLE "modules" ADD COLUMN "content" text NOT NULL;
