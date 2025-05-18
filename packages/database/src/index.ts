@@ -15,6 +15,9 @@ export const db = drizzle(pool);
 // Export schema and types
 export * from "./schema";
 
+// Export actions
+export * from "./actions";
+
 // Helper function to check database connection
 export async function checkConnection() {
   try {
