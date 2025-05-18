@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import { Providers } from "./providers";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -13,7 +14,7 @@ const geistMono = localFont({
   variable: "--font-geist-mono",
 });
 
-export const metadata = {
+export const metadata  : Metadata = {
   title: "selflearn.AI - AI Learning Platfrom",
   description: "Learn skills through fun and lessons",
 }
@@ -29,6 +30,7 @@ export default function RootLayout({
         <ClerkProvider>
           <Providers>
             {children}
+              <Toaster />
           </Providers>
         </ClerkProvider>
       </body>

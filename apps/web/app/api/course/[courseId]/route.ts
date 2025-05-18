@@ -1,3 +1,4 @@
+import { auth } from '@clerk/nextjs/server';
 import { courses, db, modules } from '@repo/database';
 import { eq } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
@@ -5,6 +6,11 @@ import { NextResponse } from 'next/server';
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const courseId = url.pathname.split('/').pop();
+
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
 
   if (!courseId) {
     return NextResponse.json({ error: 'Missing courseId' }, { status: 400 });

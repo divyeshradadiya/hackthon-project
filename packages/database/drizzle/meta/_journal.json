@@ -36,6 +36,20 @@
       "when": 1747496320607,
       "tag": "0004_previous_ravenous",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1747575330009,
+      "tag": "0005_loud_silver_samurai",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1747577519162,
+      "tag": "0006_third_purifiers",
+      "breakpoints": true
     }
   ]
 }

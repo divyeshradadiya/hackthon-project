@@ -47,3 +47,25 @@ export const useAllCourses = () =>
       return data;
     },
   });
+
+export const useUpdateModuleProgress = () =>
+  useMutation({
+    mutationFn: ({ moduleId, completed }: { moduleId: string; completed: boolean }) =>
+      axios.post(`/api/course/progress/${moduleId}`, { completed }).then(res => res.data),
+  });
+
+export const useModuleProgress = (moduleId: string) =>
+  useQuery({
+    queryKey: ['moduleProgress', moduleId],
+    queryFn: async () => {
+      const { data } = await axios.get(`/api/course/progress/${moduleId}`);
+      return data;
+    },
+    enabled: !!moduleId,
+  });
+
+export const useDeleteCourse = () =>
+  useMutation({
+    mutationFn: (courseId: string) =>
+      axios.delete(`/api/course/delete-course?courseId=${courseId}`).then(res => res.data),
+  });

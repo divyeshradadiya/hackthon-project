@@ -1,0 +1,1 @@
+ALTER TABLE "module_progress" ADD CONSTRAINT "module_progress_module_id_user_id_unique" UNIQUE("module_id","user_id");
