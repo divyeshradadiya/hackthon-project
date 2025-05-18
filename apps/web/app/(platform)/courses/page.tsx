@@ -2,14 +2,30 @@
 
 import React, { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { useCreateCourse, useAllCourses } from "@/app/services/course-service";
+import { useCreateCourse, useAllCourses, useDeleteCourse } from "@/app/services/course-service";
 import { format } from "date-fns";
-import { Loader2Icon } from "lucide-react";
+import { Loader2Icon, Trash2Icon } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function CreateCoursePage() {
   const [topic, setTopic] = useState("");
-  const { data: courses, isLoading } = useAllCourses();
+  const { toast } = useToast()
+  const { data: courses, isLoading, refetch } = useAllCourses();
   const router = useRouter();
+  const deleteMutation = useDeleteCourse();
+
+  const handleDelete = async (courseId: string, event: React.MouseEvent) => {
+    event.stopPropagation();
+    if (confirm("Are you sure you want to delete this course?")) {
+      try {
+        await deleteMutation.mutateAsync(courseId);
+        // toast()
+        refetch();
+      } catch (error) {
+        console.error("Error deleting course:", error);
+      }
+    }
+  };
 
   // Add filtered courses logic
   const filteredCourses = useMemo(() => {
@@ -111,6 +127,13 @@ export default function CreateCoursePage() {
                 <p className="mt-2 text-[12px] text-gray-600 dark:text-gray-400">
                   {course.moduleCount} modules
                 </p>
+                <button
+                  onClick={(e) => handleDelete(course.courseId, e)}
+                  className="absolute bottom-4 right-4 text-gray-400 hover:text-red-500 transition-colors"
+                  title="Delete course"
+                >
+                  <Trash2Icon className="w-4 h-4" />
+                </button>
               </div>
             ))}
           </div>
