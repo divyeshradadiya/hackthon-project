@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Menu, MoonIcon, Sun, X } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+import { usePathname } from 'next/navigation';
 
 const sidebarItems = [
   { icon: '🏠', name: 'Home', href: '/dashboard' },
@@ -18,6 +19,7 @@ const sidebarItems = [
 const Sidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(true);
   const { theme, setTheme } = useTheme();
+  const pathname = usePathname();
 
   const toggleSidebar = () => setIsOpen(prev => !prev);
 
@@ -28,17 +30,19 @@ const Sidebar: React.FC = () => {
       } `}
     >
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b dark:border-gray-700 border-gray-200">
-        {isOpen && (
-          <h1 className="text-xl font-bold tracking-tight whitespace-nowrap"></h1>
-        )}
+      <div className="flex items-center p-4 border-b dark:border-gray-700 border-gray-200">
         <button
           onClick={toggleSidebar}
           aria-label={isOpen ? 'Close sidebar' : 'Open sidebar'}
-          className="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white focus:outline-none"
+          className="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white focus:outline-none mr-2"
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
+        {isOpen && (
+          <h1 className="text-xl font-bold tracking-tight whitespace-nowrap flex-1 text-center">
+            <span className="text-green-600">Selflearn</span>.AI
+          </h1>
+        )}
       </div>
 
       {/* Navigation */}
@@ -48,19 +52,24 @@ const Sidebar: React.FC = () => {
             <li key={name}>
               <Link
                 href={href}
-                className="flex items-center gap-3 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className={`flex items-center justify-start px-4 py-2 rounded-md text-sm font-medium transition-colors
+                  ${!isOpen ? 'justify-center' : 'justify-start'}
+                  ${pathname === href 
+                    ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400' 
+                    : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+                  }`}
               >
                 <span className="text-lg">{icon}</span>
-                <span className={`${!isOpen && 'hidden'} whitespace-nowrap`}>{name}</span>
+                <span className={`${!isOpen && 'hidden'} whitespace-nowrap ml-3`}>{name}</span>
               </Link>
             </li>
           ))}
         </ul>
       </nav>
 
-      {/* Footer / Theme Toggle & Auth */}
-      <div className="p-4 border-t dark:border-gray-700 border-gray-200 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+      {/* Footer - center items */}
+      <div className="p-4 border-t dark:border-gray-700 border-gray-200">
+        <div className="flex items-center justify-center gap-2">
           <SignedIn>
             <UserButton afterSignOutUrl="/" />
           </SignedIn>
