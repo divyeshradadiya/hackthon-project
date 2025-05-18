@@ -48,7 +48,7 @@ export default function ClientCoursePage() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-b from-gray-50 to-white dark:from-black dark:to-gray-900">
+    <div className="flex flex-col h-screen bg-[#f9f9f9] dark:bg-[#1E1E20]">
       <ModuleHeader title={data.title} />
 
       <div className="flex flex-1 overflow-hidden">
@@ -58,34 +58,43 @@ export default function ClientCoursePage() {
           onSelectModule={setSelectedModuleId}
         />
 
-        <div className="flex-1 overflow-y-auto p-6 custom-scrollbar-thin bg-white/30 dark:bg-black/90 backdrop-blur-sm">
+        <div className="flex-1 flex flex-col overflow-hidden bg-white dark:bg-[#1E1E20] backdrop-blur-sm">
           {selectedModule ? (
-            <div className="max-w-3xl mx-auto prose prose-lg dark:prose-invert prose-headings:text-gray-900 dark:prose-headings:text-white prose-p:text-gray-700 dark:prose-p:text-gray-300">
-              <h2 className="text-2xl font-bold mb-6 pb-2 border-b border-gray-200/10 dark:border-gray-800">
-                {selectedModule.title}
-              </h2>
-              {selectedModule.description && (
-                <p className="text-sm italic text-gray-600 dark:text-gray-400 mb-6">
-                  {selectedModule.description}
-                </p>
-              )}
-              {selectedModule.content ? (
-                <div className="bg-white/50 dark:bg-gray-950 rounded-xl shadow-xl shadow-gray-200/20 dark:shadow-black/40">
-                  <Markdown>{selectedModule.content}</Markdown>
+            <>
+              <div className="flex-1 overflow-y-auto p-6 custom-scrollbar-thin">
+                <div className="max-w-3xl mx-auto">
+                  <h2 className="text-2xl font-bold mb-6 pb-2 border-b border-gray-200/10 dark:border-gray-800">
+                    {selectedModule.title}
+                  </h2>
+                  {selectedModule.description && (
+                    <p className="text-sm italic text-gray-600 dark:text-gray-400 mb-6">
+                      {selectedModule.description}
+                    </p>
+                  )}
+                  {selectedModule.content ? (
+                    <div className="dark:text-[#ECECEC]">
+                      <Markdown>{selectedModule.content}</Markdown>
+                    </div>
+                  ) : (
+                    <p className="text-gray-500 dark:text-gray-400">
+                      No detailed content available.
+                    </p>
+                  )}
                 </div>
-              ) : (
-                <p className="text-gray-500 dark:text-gray-400">
-                  No detailed content available.
-                </p>
-              )}
-
-              <ModuleNavigation
-                onPrevious={handlePreviousModule}
-                onNext={handleNextModule}
-                hasPrevious={currentModuleIndex > 0}
-                hasNext={currentModuleIndex < data.modules.length - 1}
-              />
-            </div>
+              </div>
+              <div className="flex-shrink-0 border-t border-gray-200 dark:border-gray-800 p-6 bg-white dark:bg-[#1E1E20]">
+                <div className="max-w-3xl mx-auto">
+                  <ModuleNavigation
+                    onPrevious={handlePreviousModule}
+                    onNext={handleNextModule}
+                    hasPrevious={currentModuleIndex > 0}
+                    hasNext={currentModuleIndex < data.modules.length - 1}
+                    previousTitle={currentModuleIndex > 0 ? data.modules[currentModuleIndex - 1]?.title ?? '' : ''}
+                    nextTitle={currentModuleIndex < data.modules.length - 1 ? data.modules[currentModuleIndex + 1]?.title ?? '' : ''}
+                  />
+                </div>
+              </div>
+            </>
           ) : (
             <div className="flex items-center justify-center h-full">
               <div className="text-center space-y-3">

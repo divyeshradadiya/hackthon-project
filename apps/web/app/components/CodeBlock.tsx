@@ -26,8 +26,8 @@ export const CodeBlock = ({ lang, code }: codeBlockProps) => {
   }, [code, language]);
 
   return (
-    <div className="not-prose w-full flex-shrink-0 overflow-hidden rounded-xl border border-gray-200 text-gray-800 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-200">
-      <div className="flex w-full items-center justify-between border-b border-gray-200 bg-gray-50 p-1 dark:border-gray-700 dark:bg-gray-950">
+    <div className="not-prose w-full flex-shrink-0 overflow-hidden rounded-xl border border-gray-200 text-gray-800 dark:border-gray-700 dark:bg-[#9CA3AF] dark:text-gray-200">
+      <div className="flex w-full items-center justify-between border-b border-gray-200 bg-gray-50 p-1 dark:border-gray-700 dark:bg-[#9CA3AF]">
         <p className="gap-1 px-2 text-xs text-gray-600 dark:text-gray-400">
           {language}
         </p>
@@ -47,7 +47,7 @@ export const CodeBlock = ({ lang, code }: codeBlockProps) => {
           Copy
         </Button>
       </div>
-      <pre className="w-full p-[2px] pb-0 rounded-lg bg-gray-50 dark:bg-gray-950">
+      <pre className="w-full p-[2px] pb-0 rounded-lg bg-gray-50 dark:bg-[#9CA3AF]">
         <code
           style={fontIbemPlex.style}
           className={`hljs language-${language} inline-block w-full overflow-x-auto whitespace-pre-wrap break-words pr-[100%] !text-[11px] tracking-wide lg:text-[12px]`}

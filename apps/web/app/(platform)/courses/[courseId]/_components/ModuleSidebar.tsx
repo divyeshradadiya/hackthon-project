@@ -1,7 +1,7 @@
 interface Module {
   id: string;
   title: string;
-  completed?: boolean; // Add this optional property
+  completed?: boolean;
 }
 
 interface ModuleSidebarProps {
@@ -15,26 +15,28 @@ export function ModuleSidebar({ modules, selectedModuleId, onSelectModule }: Mod
   const progress = (completedModules / modules.length) * 100;
 
   return (
-    <div className="w-80 border-r border-gray-200/10 dark:border-gray-800 bg-white/50 dark:bg-black/90 backdrop-blur-sm flex flex-col">
+    <div className="w-80 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-[#111113] flex flex-col">
       {/* Sidebar Header */}
-      <div className="p-6 border-b border-gray-200/10 dark:border-gray-800">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Course Content</h2>
-        <div className="mt-2">
-          <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
-            <span>{completedModules} of {modules.length} completed</span>
-            <span>{Math.round(progress)}%</span>
-          </div>
-          <div className="h-2 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-primary-600 dark:bg-primary-400 transition-all duration-300"
-              style={{ width: `${progress}%` }}
-            />
+      <div className="p-3 border-b border-[#ECECEC] dark:border-[#333333]">
+        <div className="rounded-xl bg-gray-100 dark:bg-[#1f1f21] shadow-sm border border-[#ECECEC] dark:border-[#111113] p-4">
+          <h2 className="text-lg font-semibold text-gray-800 dark:text-[#ECECEC]">Course Content</h2>
+          <div className="mt-2">
+        <div className="flex justify-between text-sm text-gray-700 dark:text-[#ECECEC] mb-2">
+          <span>{completedModules} of {modules.length} completed</span>
+          <span>{Math.round(progress)}%</span>
+        </div>
+        <div className="h-2 bg-[#d1d1d1] dark:bg-[#111113] rounded-full overflow-hidden">
+          <div 
+            className="h-full bg-[#10B981] dark:bg-[#10B981] transition-all duration-300"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
           </div>
         </div>
       </div>
 
       {/* Modules List */}
-      <nav className="flex-1 overflow-y-auto custom-scrollbar-thin p-4">
+      <nav className="flex-1 overflow-y-auto custom-scrollbar-thin p-4 bg-white dark:bg-[#111113]">
         <ul className="space-y-2">
           {modules.map((mod, idx) => (
             <li key={mod.id}>
@@ -42,8 +44,8 @@ export function ModuleSidebar({ modules, selectedModuleId, onSelectModule }: Mod
                 onClick={() => onSelectModule(mod.id)}
                 className={`group w-full text-left px-4 py-3 rounded-xl transition-all duration-200 
                   ${selectedModuleId === mod.id
-                    ? "bg-gray-100 dark:bg-gray-900/20 ring-1 ring-primary-500/20"
-                    : "hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                    ? "bg-gray-100 dark:bg-gray-900 ring-1 ring-gray-500"
+                    : "hover:bg-gray-50 dark:hover:bg-gray-800"
                   }`}
               >
                 <div className="flex items-center">
@@ -60,12 +62,11 @@ export function ModuleSidebar({ modules, selectedModuleId, onSelectModule }: Mod
                   <div className="ml-3 flex-1">
                     <p className={`text-sm font-medium ${
                       selectedModuleId === mod.id
-                        ? "text-primary-900 dark:text-primary-100"
+                        ? "text-gray-900 dark:text-gray-100"
                         : "text-gray-900 dark:text-gray-100"
                     }`}>
                       {mod.title}
                     </p>
-                    {/* Optional estimated time or status */}
                     <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                       {mod.completed ? "Completed" : "Not started"}
                     </p>

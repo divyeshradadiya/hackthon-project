@@ -77,24 +77,24 @@ Do **not** include details yet, and do **not** wrap in Markdown fences.
     // 4. Phase-2: batch generate details, asking the model to properly escape for JSON
     const makeDetails = async () => {
       const detailsPrompt = `
-You are an expert AI course generator.
-you will give detailed and structured Markdown content for each module.
-you can use code blocks, lists, tables, charts and other Markdown features.
-dont include modulesList's title and description.
+    You are an expert AI course generator.
+    Provide detailed and well-structured Markdown content for each module.
+    You may use code blocks, lists, tables, charts, and other Markdown features, and include appropriate links.
+    Do not include the module's title or description in the details.
 
-Here is the list of ${moduleList.length} modules (title & summary):
-${JSON.stringify(moduleList, null, 2)}
+    Here is the list of ${moduleList.length} modules (title & summary):
+    ${JSON.stringify(moduleList, null, 2)}
 
-Now return **only** a JSON object with exactly this shape:
-{
-  "details": [
-    "Detailed Markdown for module 1, with all backslashes \\\\ and quotes \\" properly escaped.",
-    ... (one entry per module, in the same order)
-  ]
-}
+    Now return **only** a JSON object with exactly this shape:
+    {
+      "details": [
+        "Detailed Markdown for module 1, with all backslashes \\\\ and quotes \\" properly escaped.",
+        ... (one entry per module, in the same order)
+      ]
+    }
 
-- **Important**: Escape all backslashes and quotation marks so that this is valid JSON.
-`;
+    - **Important**: Escape all backslashes and quotation marks so that this is valid JSON.
+    `;
 // - **Do not** wrap in code fences.
       const resp = await openai.chat.completions.create({
         model: "gpt-4o-mini",

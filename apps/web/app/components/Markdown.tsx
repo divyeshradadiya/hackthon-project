@@ -91,13 +91,13 @@ const components: Partial<Components> = {
     </p>
   ),
   table: ({ children }) => (
-    <table className="w-full border-collapse">{children}</table>
+    <table className="my-2 w-full !text-[14px] border-collapse">{children}</table>
   ),
   thead: ({ children }) => (
-    <thead className="bg-gray-50 dark:bg-gray-800">{children}</thead>
+    <thead className="bg-gray-50 !text-[14px] dark:bg-gray-800">{children}</thead>
   ),
   th: ({ children }) => (
-    <th className="border border-gray-300 dark:border-gray-600 p-2">
+    <th className="border !text-[14px] border-gray-300 dark:border-gray-600 p-2">
       {children}
     </th>
   ),
@@ -188,7 +188,7 @@ const components: Partial<Components> = {
   h2: ({ node, children, ...props }) => {
     return (
       <h3
-        className="mt-1 !text-[14px] font-semibold text-black dark:text-white"
+        className="mt-2 !text-[14px] font-semibold text-black dark:text-white"
         {...props}
       >
         {children}

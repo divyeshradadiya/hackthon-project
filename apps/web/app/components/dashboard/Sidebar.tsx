@@ -11,9 +11,10 @@ const sidebarItems = [
   { icon: '🏠', name: 'Home', href: '/dashboard' },
   { icon: '➕', name: 'Create a Module', href: '/courses/create' },
   { icon: '📚', name: 'My Modules', href: '/courses' },
-  { icon: '📖', name: 'Learning', href: '/learning' },
+  // { icon: '📖', name: 'Learning', href: '/learning' },
   { icon: '🧠', name: 'Quiz Me', href: '/quiz' },
   { icon: '⚙️', name: 'Settings', href: '/settings' },
+  { icon: '🔙', name: 'Go to Home Page', href: '/' }
 ];
 
 const Sidebar: React.FC = () => {
@@ -25,12 +26,12 @@ const Sidebar: React.FC = () => {
 
   return (
     <div
-      className={`h-screen transition-all duration-300 ease-in-out flex flex-col border-r bg-white text-gray-900 dark:bg-gray-900 dark:text-white ${
+      className={`h-screen transition-all duration-300 ease-in-out flex flex-col border-r dark:border-[#383838] bg-white text-gray-900 dark:bg-[#111113] dark:text-white ${
         isOpen ? 'w-52' : 'w-20'
       } `}
     >
       {/* Header */}
-      <div className="flex items-center p-4 border-b dark:border-gray-700 border-gray-200">
+      <div className="flex items-center p-4 border-b dark:border-[#383838] border-gray-200">
         <button
           onClick={toggleSidebar}
           aria-label={isOpen ? 'Close sidebar' : 'Open sidebar'}

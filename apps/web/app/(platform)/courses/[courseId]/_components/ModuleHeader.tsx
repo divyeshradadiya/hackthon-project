@@ -4,8 +4,8 @@ interface ModuleHeaderProps {
 
 export function ModuleHeader({ title }: ModuleHeaderProps) {
   return (
-    <header className="px-6 py-4 border-b border-gray-200/10 dark:border-gray-800 bg-white/50 dark:bg-black/90 backdrop-blur-sm">
-      <h1 className="text-2xl md:text-3xl font-bold text-center bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+    <header className="px-6 py-4 border-b border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-[#111113] backdrop-blur-sm">
+      <h1 className="text-2xl md:text-3xl font-bold text-center text-gray-900 dark:text-gray-100">
         {title}
       </h1>
     </header>

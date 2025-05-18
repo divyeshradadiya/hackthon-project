@@ -19,11 +19,11 @@ const examplePrompts = [
 
 // the simulated AI steps
 const aiSteps = [
-  'Course created',
-  'Modules generated',
-  'Lessons created',
-  'Refining outline',
-  'Categorizing content',
+  // 'Course created',
+  'Modules generated...',
+  'Generating module content...',
+  'Categorizing content...',
+  'Finalizing course structure...',
 ];
 
 export default function CreateCoursePage() {
@@ -50,7 +50,7 @@ export default function CreateCoursePage() {
           setBotMessages(prev => [...prev, aiSteps[index] as string]);
         }
         showNextMessage(index + 1);
-      }, Math.random() * 1000 + 6000);
+      }, Math.random() * 1000 + 2000);
     } else {
       setBotMessages(prev => [
         ...prev,
