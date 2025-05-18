@@ -1,14 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useCreateCourse, useAllCourses } from "@/app/services/course-service";
 import { format } from "date-fns";
+import { Loader2Icon } from "lucide-react";
 
 export default function CreateCoursePage() {
   const [topic, setTopic] = useState("");
   const { data: courses, isLoading } = useAllCourses();
   const router = useRouter();
+
+  // Add filtered courses logic
+  const filteredCourses = useMemo(() => {
+    if (!courses) return [];
+    return courses.filter((course) =>
+      course.title.toLowerCase().includes(topic.toLowerCase())
+    );
+  }, [courses, topic]);
 
   console.log("Courses:", courses);
   if (!courses && !isLoading) {
@@ -47,16 +56,12 @@ export default function CreateCoursePage() {
       </div>
 
       {isLoading && (
-        <div className="flex justify-center items-center h-40">
-          <span className="text-gray-500 dark:text-gray-400">
-            Loading courses...
-          </span>
-        </div>
+        <div className="flex justify-center items-center h-12"><Loader2Icon className="w-4 h-4 mr-2 animate-spin" /> <span className="text-gray-500 dark:text-gray-400">Loading courses...</span></div>
       )}
 
       {/* Courses Grid Section */}
       {!isLoading && (
-        <div className="flex-1 overflow-y-auto px-6 py-2 pt-3">
+        <div className="flex-1 overflow-y-auto items-center justify-center px-6 py-2 pt-3">
           <div className="grid auto-rows-[180px] grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
             {/* Create Course Card */}
             <div
@@ -76,11 +81,12 @@ export default function CreateCoursePage() {
                 </div>
               </div>
               <p className="mt-6 text-[12px] text-gray-600 dark:text-gray-400">
-                Generate an AI-powered modules on any topic you want to learn with visuals, examples, and more.
+                Generate an AI-powered modules on any topic you want to learn
+                with visuals, examples, and more.
               </p>
             </div>
 
-            {(courses ?? []).map((course) => (
+            {(filteredCourses ?? []).map((course) => (
               <div
                 key={course.courseId}
                 className="relative h-[180px] cursor-pointer rounded-xl border bg-white p-4 shadow transition-shadow hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:shadow-none dark:hover:shadow-md"
@@ -92,7 +98,9 @@ export default function CreateCoursePage() {
                   </span>
                   <h2 className="flex flex-col text-gray-800 dark:text-gray-200">
                     <span className="break-words text-[14px] font-semibold">
-                        {course.title.length > 40 ? course.title.slice(0, 40) + "..." : course.title}
+                      {course.title.length > 40
+                        ? course.title.slice(0, 40) + "..."
+                        : course.title}
                     </span>
                     <span className="text-[12px] text-gray-500">
                       {course.createdAt &&
