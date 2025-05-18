@@ -34,3 +34,16 @@ export const useCourse = (courseId: string) =>
     },
     enabled: !!courseId,
   });
+
+export type CourseSummary = Omit<Course, 'modules'> & {
+  moduleCount: number;
+};
+
+export const useAllCourses = () =>
+  useQuery<CourseSummary[], unknown>({
+    queryKey: ['courses'],
+    queryFn: async () => {
+      const { data } = await axios.get<CourseSummary[]>('/api/course/get-courses');
+      return data;
+    },
+  });

@@ -15,9 +15,11 @@ export default function ClientCoursePage() {
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
 
   if (isLoading) return <div className="p-6">Loading course…</div>;
-  if (isError || !data) return <div className="p-6 text-red-600">Course not found</div>;
+  if (isError || !data || !data.modules) return <div className="p-6 text-red-600">Course not found</div>;
 
-  const selectedModule = data.modules.find(mod => mod.id === selectedModuleId);
+  const selectedModule = selectedModuleId 
+    ? data.modules.find(mod => mod.id === selectedModuleId)
+    : null;
 
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-gray-50 to-white dark:from-black dark:to-gray-900">

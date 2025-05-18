@@ -8,7 +8,8 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 
 const sidebarItems = [
   { icon: '🏠', name: 'Home', href: '/dashboard' },
-  { icon: '📚', name: 'My Courses', href: '/courses' },
+  { icon: '➕', name: 'Create a Module', href: '/courses/create' },
+  { icon: '📚', name: 'My Modules', href: '/courses' },
   { icon: '📖', name: 'Learning', href: '/learning' },
   { icon: '🧠', name: 'Quiz Me', href: '/quiz' },
   { icon: '⚙️', name: 'Settings', href: '/settings' },
@@ -23,7 +24,7 @@ const Sidebar: React.FC = () => {
   return (
     <div
       className={`h-screen transition-all duration-300 ease-in-out flex flex-col border-r bg-white text-gray-900 dark:bg-gray-900 dark:text-white ${
-        isOpen ? 'w-64' : 'w-20'
+        isOpen ? 'w-52' : 'w-20'
       } `}
     >
       {/* Header */}
@@ -57,22 +58,22 @@ const Sidebar: React.FC = () => {
         </ul>
       </nav>
 
-        <button
-          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          className="p-2 text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition"
-          title="Toggle Theme"
-        >
-          {theme === 'dark' ? <Sun className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
-        </button>
       {/* Footer / Theme Toggle & Auth */}
       <div className="p-4 border-t dark:border-gray-700 border-gray-200 flex items-center justify-between">
-        <div>
+        <div className="flex items-center gap-2">
           <SignedIn>
             <UserButton afterSignOutUrl="/" />
           </SignedIn>
           <SignedOut>
             <SignInButton mode="modal" />
           </SignedOut>
+          <button
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className="p-2 text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+            title="Toggle Theme"
+          >
+            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
+          </button>
         </div>
       </div>
     </div>

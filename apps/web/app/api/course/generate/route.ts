@@ -18,15 +18,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'learningInput is required' }, { status: 400 });
   }
 
-  // 3. New prompt: title + description + details
   const prompt = `
 You are an expert AI course generator.
 
-Create a course titled "Intro to ${learningInput}", you can make max **15 modules**.
+Create a course title from "${learningInput}", you can make modules/courses within ** 1 to 15 modules**.
 For each module, return an object with three properties:
 1. "title": a short, clear module title
 2. "description": a one-sentence summary of what the module covers
-3. "details": a detailed, Markdown-formatted explanation (examples,tables, code snippets, diagrams) — tailored to the module topic
+3. "details": a detailed, Markdown-formatted explanation (examples, tables, code snippets, diagrams or visuals) — tailored to the module topic
 
 Return **only** a JSON array of these objects like:
 
@@ -34,7 +33,7 @@ Return **only** a JSON array of these objects like:
   {
     "title": "Module 1 Title",
     "description": "A one-line summary of module 1.",
-    "details": "## Module 1\\nHere goes your in-depth Markdown content..."
+    "details": "Here goes your Markdown content..."
   },
   …
 ]

@@ -33,7 +33,7 @@ export const CodeBlock = ({ lang, code }: codeBlockProps) => {
         </p>
         <Button
           className="gap-1 !text-xs"
-        //   variant="gray"
+          variant="gray"
           size="sm"
           onClick={() => {
             code && copy(code);
