@@ -8,7 +8,7 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 import { usePathname } from 'next/navigation';
 
 const sidebarItems = [
-  { icon: '🏠', name: 'Home', href: '/dashboard' },
+  { icon: '🏠', name: 'Dashboard', href: '/dashboard' },
   { icon: '➕', name: 'Create a Module', href: '/courses/create' },
   { icon: '📚', name: 'My Modules', href: '/courses' },
   // { icon: '📖', name: 'Learning', href: '/learning' },

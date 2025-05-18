@@ -11,9 +11,11 @@ interface QuizStore {
   quizStarted: boolean;
   timeSpent: number;
   quizResult: QuizResult | null;
+  userAnswers: number[];
   setQuizType: (type: "module" | "topic" | null) => void;
   setTopic: (topic: string) => void;
   setDifficulty: (difficulty: 'easy' | 'medium' | 'hard') => void;
+  setUserAnswers: (answers: number[]) => void;
   generateQuiz: () => Promise<void>;
   startQuiz: () => void;
   submitQuiz: (answers: number[]) => void;
@@ -23,7 +25,7 @@ interface QuizStore {
 
 export const useQuizStore = create<QuizStore>((set, get) => ({
   quizType: null,
-  topic: '',
+  topic: 'topic',
   difficulty: 'medium',
   questions: [],
   loading: false,
@@ -31,10 +33,12 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
   quizStarted: false,
   timeSpent: 0,
   quizResult: null,
+  userAnswers: [],
   
   setQuizType: (type) => set({ quizType: type }),
   setTopic: (topic) => set({ topic }),
   setDifficulty: (difficulty) => set({ difficulty }),
+  setUserAnswers: (answers) => set({ userAnswers: answers }),
   
   generateQuiz: async () => {
     set({ loading: true });
@@ -51,7 +55,7 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
   
   submitQuiz: (answers) => {
     const result = quizService.calculateResult(get().questions, answers, get().timeSpent);
-    set({ quizStarted: false, quizResult: result });
+    set({ quizStarted: false, quizResult: result, userAnswers: answers });
   },
   
   resetQuiz: () => set({
@@ -62,6 +66,7 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
     quizStarted: false,
     timeSpent: 0,
     quizResult: null,
+    userAnswers: [],
   }),
   
   incrementTime: () => set((state) => ({ timeSpent: state.timeSpent + 1 })),
