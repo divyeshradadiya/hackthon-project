@@ -7,7 +7,12 @@ import { FaRobot, FaPaperPlane, FaLightbulb } from 'react-icons/fa';
 import { Loader2 } from 'lucide-react';
 
 const examplePrompts = [
+  'CA : interpretation of the numerical values of elasticity of demand',
+  'i wanna start a business in software, or i wanna launch my product but i dont know how to do business.',
+  'learning python from scrach',
+  "Intro of web development in react",
   'Full-Stack Interview Preparation Guide with System Design',
+  'how to make a punjabi food',
   'Italian Cuisine Masterclass: From Basics to Advanced',
   'Complete AWS Services Documentation Simplified',
   'MERN Stack Development',
@@ -50,7 +55,7 @@ export default function CreateCoursePage() {
           setBotMessages(prev => [...prev, aiSteps[index] as string]);
         }
         showNextMessage(index + 1);
-      }, Math.random() * 1000 + 2000);
+      }, Math.random() * 1000 + 1000);
     } else {
       setBotMessages(prev => [
         ...prev,
@@ -137,7 +142,7 @@ export default function CreateCoursePage() {
               onKeyDown={e => e.ctrlKey && e.key === 'Enter' && handleSend()}
               placeholder="Type your course topic…"
               rows={3}
-              className="w-full min-w-[400px] border border-gray-300 dark:border-gray-800 dark:bg-[#202023] dark:text-[#ECECEC] rounded-lg px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-green-400"
+              className="w-full min-w-[400px] border border-gray-300 bg-gray-100 dark:border-gray-800 dark:bg-[#202023] dark:text-[#ECECEC] rounded-lg px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-green-400"
               />
               <button
               onClick={handleSend}

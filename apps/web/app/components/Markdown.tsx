@@ -29,25 +29,36 @@ const NonMemoizedMarkdown = ({ children, editable = false, onSave }: MarkdownPro
 
   if (isEditing && editable) {
     return (
-      <div className="relative">
-        <textarea
-          value={editContent}
-          onChange={(e) => setEditContent(e.target.value)}
-          className="w-full min-h-[300px] p-4 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-        />
-        <div className="flex gap-2 mt-2">
-          <button
-            onClick={handleSave}
-            className="flex items-center gap-2 px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-          >
-            <Save className="w-4 h-4" /> Save
-          </button>
-          <button
-            onClick={handleCancel}
-            className="flex items-center gap-2 px-3 py-1 bg-gray-500 text-white rounded-md hover:bg-gray-600"
-          >
-            <X className="w-4 h-4" /> Cancel
-          </button>
+      <div className="relative flex flex-col md:flex-row gap-4">
+        {/* Editor */}
+        <div className="flex-1 flex flex-col">
+          <textarea
+            value={editContent}
+            onChange={(e) => setEditContent(e.target.value)}
+            className="w-full min-h-[300px] p-4 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono resize-vertical"
+            style={{ fontFamily: 'inherit' }}
+          />
+          <div className="flex gap-2 mt-2">
+            <button
+              onClick={handleSave}
+              className="flex items-center gap-2 px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            >
+              <Save className="w-4 h-4" /> Save
+            </button>
+            <button
+              onClick={handleCancel}
+              className="flex items-center gap-2 px-3 py-1 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+            >
+              <X className="w-4 h-4" /> Cancel
+            </button>
+          </div>
+        </div>
+        {/* Live Preview */}
+        <div className="flex-1 border rounded-md border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-4 overflow-auto min-h-[300px]">
+          <div className="text-xs text-gray-500 mb-2">Live Preview</div>
+          <ReactMarkdown remarkPlugins={remarkPlugins} components={components}>
+            {editContent}
+          </ReactMarkdown>
         </div>
       </div>
     );
