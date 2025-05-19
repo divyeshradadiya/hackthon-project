@@ -14,6 +14,7 @@ export default function ClientCoursePage() {
   const { courseId } = useParams();
   const { data, isLoading, isError } = useCourse(courseId as string);
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const { mutate: updateProgress } = useUpdateModuleProgress();
   const { setModuleProgress, getModuleProgress, getCourseProgress } = useProgressStore();
 
@@ -67,26 +68,21 @@ export default function ClientCoursePage() {
   return (
     <div className="flex flex-col h-screen bg-[#f9f9f9] dark:bg-[#1E1E20]">
       <ModuleHeader title={data.title} />
-      {/* <div className="text-sm text-gray-600 dark:text-gray-400 px-6 pb-2">
-        Progress: {courseProgress.toFixed(0)}%
-      </div> */}
 
       <div className="flex flex-1 overflow-hidden">
         <ModuleSidebar
           modules={data.modules}
           selectedModuleId={selectedModuleId}
           onSelectModule={setSelectedModuleId}
-          // progress={data.modules.reduce((acc, module) => ({
-          //   ...acc,
-          //   [module.id]: getModuleProgress(module.id)?.completed || false
-          // }), {})}
+          isCollapsed={isSidebarCollapsed}
+          onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
         />
 
-        <div className="flex-1 flex flex-col overflow-hidden bg-white dark:bg-[#1E1E20] backdrop-blur-sm">
+        <div className={`flex-1 flex flex-col overflow-hidden bg-white dark:bg-[#1E1E20] backdrop-blur-sm`}>
           {selectedModule ? (
             <>
               <div className="flex-1 overflow-y-auto p-6 custom-scrollbar-thin">
-                <div className="max-w-3xl mx-auto">
+                <div className="max-w-5xl mx-auto">
                   <div className="flex justify-between items-center mb-6 pb-2 border-b border-gray-200/10 dark:border-gray-800">
                     <h2 className="text-2xl font-bold">{selectedModule.title}</h2>
                     <button
@@ -101,9 +97,6 @@ export default function ClientCoursePage() {
                       {getModuleProgress(selectedModule.id)?.completed ? "Completed" : "Mark as Complete"}
                     </button>
                   </div>
-                  {/* <h2 className="text-2xl font-bold mb-6 pb-2 border-b border-gray-200/10 dark:border-gray-800">
-                    {selectedModule.title}
-                  </h2> */}
                   {selectedModule.description && (
                     <p className="text-sm italic text-gray-600 dark:text-gray-400 mb-6">
                       {selectedModule.description}
@@ -129,7 +122,7 @@ export default function ClientCoursePage() {
                 </div>
               </div>
               <div className="flex-shrink-0 border-t border-gray-200 dark:border-gray-800 p-6 bg-white dark:bg-[#1E1E20]">
-                <div className="max-w-3xl mx-auto">
+                <div className="max-w-5xl mx-auto">
                   <ModuleNavigation
                     onPrevious={handlePreviousModule}
                     onNext={handleNextModule}
