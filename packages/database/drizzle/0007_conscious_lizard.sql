@@ -1,0 +1,1 @@
+ALTER TABLE "modules" ADD COLUMN "created_at" timestamp DEFAULT now() NOT NULL;

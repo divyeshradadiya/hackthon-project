@@ -16,10 +16,20 @@ interface MarkdownProps {
 const NonMemoizedMarkdown = ({ children, editable = false, onSave }: MarkdownProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(children);
+  const [isSaving, setIsSaving] = useState(false);
 
-  const handleSave = () => {
-    onSave?.(editContent);
-    setIsEditing(false);
+  const handleSave = async () => {
+    if (!onSave) return;
+    setIsSaving(true);
+    try {
+      await onSave(editContent);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Failed to save:", error);
+      // Keep editor open on error
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleCancel = () => {
@@ -41,9 +51,10 @@ const NonMemoizedMarkdown = ({ children, editable = false, onSave }: MarkdownPro
           <div className="flex gap-2 mt-2 py-2">
             <button
               onClick={handleSave}
-              className="flex items-center gap-2 px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              disabled={isSaving}
+              className="flex items-center gap-2 px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-blue-300"
             >
-              <Save className="w-4 h-4" /> Save
+              <Save className="w-4 h-4" /> {isSaving ? 'Saving...' : 'Save'}
             </button>
             <button
               onClick={handleCancel}

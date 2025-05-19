@@ -13,7 +13,7 @@ import { Check } from "lucide-react";
 
 export default function ClientCoursePage() {
   const { courseId } = useParams();
-  const { data, isLoading, isError } = useCourse(courseId as string);
+  const { data, isLoading, isError, refetch } = useCourse(courseId as string);
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const { mutate: updateProgress } = useUpdateModuleProgress();
@@ -111,10 +111,15 @@ export default function ClientCoursePage() {
                         onSave={async (content) => {
                           try {
                             await updateContent({ moduleId: selectedModule.id, content });
+                            // Add a small delay before refetching to ensure the update is processed
+                            setTimeout(async () => {
+                              await refetch();
+                            }, 500);
                             toast.success("Content saved successfully");
                           } catch (error) {
                             toast.error("Failed to save content");
                             console.error("Error saving content:", error);
+                            throw error; // Re-throw to keep editor open
                           }
                         }}
                       >

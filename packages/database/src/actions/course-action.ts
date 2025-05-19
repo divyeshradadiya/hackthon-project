@@ -69,6 +69,7 @@ Do **not** include details yet, and do **not** wrap in Markdown fences.
         description: m.description,
         content: "",
         courseId: course.id,
+        createdAt: new Date(),
       }))
     )
     .returning();
@@ -227,7 +228,8 @@ export async function getCourses(userId: string) {
     })
     .from(courses)
     .leftJoin(modules, eq(modules.courseId, courses.id))
-    .where(eq(courses.userId, userId))
+    .where(eq(courses.userId, userId)).
+    orderBy(courses.createdAt)
     .execute();
 
   if (!allCourses || allCourses.length === 0) {
