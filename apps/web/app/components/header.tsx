@@ -15,8 +15,9 @@ export function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <Brain className="h-8 w-8 text-primary mr-2" />
-            <span className="text-xl font-bold text-primary">MathQuest</span>
+          <h1 className="text-xl font-bold tracking-tight whitespace-nowrap flex-1 text-center">
+            <span className="text-green-600">Selflearn</span>.AI
+          </h1>
           </Link>
 
           {/* Desktop Nav */}
