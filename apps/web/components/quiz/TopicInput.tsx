@@ -10,7 +10,7 @@ export const TopicInput = () => {
           type="text"
           value={topic}
           onChange={(e) => setTopic(e.target.value)}
-          placeholder="Enter your topic (e.g., 'Basic Algebra', 'World War II')"
+          placeholder="Enter your topic (e.g., 'Javascript interview', 'biology')"
           className="flex-1 p-4 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
           onKeyDown={(e) => e.key === 'Enter' && generateQuiz()}
         />

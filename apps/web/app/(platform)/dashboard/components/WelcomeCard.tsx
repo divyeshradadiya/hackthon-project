@@ -19,24 +19,27 @@ import {
 } from "lucide-react";
 
 import { useUserProgress } from "@/app/services/progress-service";
+import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
 
 export function WelcomeCard() {
   const { data: progress, isLoading } = useUserProgress();
 
+    const { isSignedIn, user, isLoaded } = useUser();
   return (
-    <Card className="w-full md:w-2/3 card-container h-full flex flex-col">
+    <Card className="w-full md:w-2/3 card-container h-full flex flex-col bg-white/50 dark:bg-[#111113] dark:border-gray-800">
       <CardHeader className="pb-2">
         <div className="flex justify-between items-center">
-          <CardTitle className="text-xl text-dark-gray">
-            Welcome back, Jamie!
+          <CardTitle className="text-xl text-dark-gray dark:text-[#ECECEC]">
+            Welcome back, {user?.firstName}!
           </CardTitle>
-          <Badge className="bg-success/20 text-success border-0 flex items-center gap-1 px-3 py-1">
+          <Badge className="bg-success/20 text-success border-0 flex items-center gap-1 px-3 py-1 dark:bg-success/10 dark:text-success/90">
             <Calendar className="h-3 w-3" />
             {progress?.coursesPlayed || 0} Course
             {progress?.coursesPlayed !== 1 ? "s" : ""} Started
           </Badge>
         </div>
-        <CardDescription className="text-neutral-gray">
+        <CardDescription className="text-neutral-gray dark:text-gray-400">
           Continue your learning adventure
         </CardDescription>
       </CardHeader>
@@ -44,16 +47,16 @@ export function WelcomeCard() {
         <div className="space-y-6 h-full flex flex-col">
           <div>
             <div className="flex justify-between mb-2">
-              <span className="text-sm font-medium">Overall Progress</span>
-              <span className="text-sm font-medium font-space-mono">
-                {progress?.avgCourseCompletion || 0}%
+              <span className="text-sm font-medium dark:text-[#ECECEC]">Overall Progress</span>
+              <span className="text-sm font-medium font-space-mono dark:text-[#ECECEC]">
+                {progress?.completedModules || 0}%
               </span>
             </div>
-            <div className="progress-bar">
+            <div className="progress-bar dark:bg-gray-800">
               <div
-                className="progress-bar-fill"
+                className="progress-bar-fill dark:bg-primary/80"
                 style={{
-                  width: `${progress?.avgCourseCompletion || 0}%`,
+                  width: `${progress?.completedModules || 0}%`,
                 }}
               ></div>
             </div>
@@ -87,8 +90,11 @@ export function WelcomeCard() {
         </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-full bg-primary text-white hover:bg-primary/90">
-          Continue Learning
+        <Button
+          className="w-full bg-primary text-white hover:bg-primary/90 dark:bg-primary/80 dark:hover:bg-primary/70"
+          asChild
+        >
+          <Link href="/courses" rel="noopener noreferrer">Continue Learning</Link>
         </Button>
       </CardFooter>
     </Card>

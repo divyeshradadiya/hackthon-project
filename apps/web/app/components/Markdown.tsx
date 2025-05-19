@@ -5,14 +5,68 @@ import { createPortal } from "react-dom";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { CodeBlock } from "./CodeBlock";
-import { ArrowUpRight, LinkIcon } from "lucide-react";
+import { ArrowUpRight, LinkIcon, Pencil, Save, X } from "lucide-react";
 
-const NonMemoizedMarkdown = ({ children }: { children: string }) => {
-  console.log(children)
+interface MarkdownProps {
+  children: string;
+  editable?: boolean;
+  onSave?: (content: string) => void;
+}
+
+const NonMemoizedMarkdown = ({ children, editable = false, onSave }: MarkdownProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editContent, setEditContent] = useState(children);
+
+  const handleSave = () => {
+    onSave?.(editContent);
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setEditContent(children);
+    setIsEditing(false);
+  };
+
+  if (isEditing && editable) {
+    return (
+      <div className="relative">
+        <textarea
+          value={editContent}
+          onChange={(e) => setEditContent(e.target.value)}
+          className="w-full min-h-[300px] p-4 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+        />
+        <div className="flex gap-2 mt-2">
+          <button
+            onClick={handleSave}
+            className="flex items-center gap-2 px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          >
+            <Save className="w-4 h-4" /> Save
+          </button>
+          <button
+            onClick={handleCancel}
+            className="flex items-center gap-2 px-3 py-1 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+          >
+            <X className="w-4 h-4" /> Cancel
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <ReactMarkdown remarkPlugins={remarkPlugins} components={components}>
-      {children}
-    </ReactMarkdown>
+    <div className="relative">
+      {editable && (
+        <button
+          onClick={() => setIsEditing(true)}
+          className="absolute top-0 right-0 p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+        >
+          <Pencil className="w-4 h-4" />
+        </button>
+      )}
+      <ReactMarkdown remarkPlugins={remarkPlugins} components={components}>
+        {children}
+      </ReactMarkdown>
+    </div>
   );
 };
 

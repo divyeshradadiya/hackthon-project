@@ -90,12 +90,12 @@ export default function CreateCoursePage() {
   const isEmpty = messages.length === 0 && botMessages.length === 0;
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="flex flex-col h-screen bg-white/50 dark:bg-[#111113]">
 
-      <header className="flex flex-col gap-4 px-6 py-4 bg-white dark:bg-gray-800 shadow">
+      <header className="flex flex-col gap-4 px-6 py-4 bg-white/50 dark:bg-[#111113] dark:border-gray-800 shadow">
         <div className="flex items-center space-x-3">
           <FaRobot className="text-2xl text-green-600 dark:text-green-400" />
-          <h1 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
+          <h1 className="text-xl font-semibold text-dark-gray dark:text-[#ECECEC]">
             Create New Course
           </h1>
         </div>
@@ -122,7 +122,7 @@ export default function CreateCoursePage() {
           // Original empty state UI
           <div className="w-full max-w-xl space-y-6">
             <div className="text-center space-y-2">
-                <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
+                <h2 className="text-3xl font-bold text-dark-gray dark:text-[#ECECEC]">
                 <span role="img" aria-label="waving hand" className="mr-2">👋</span>
                 Hi! How can I help you today?
                 </h2>
@@ -137,7 +137,7 @@ export default function CreateCoursePage() {
               onKeyDown={e => e.ctrlKey && e.key === 'Enter' && handleSend()}
               placeholder="Type your course topic…"
               rows={3}
-              className="w-full min-w-[400px] border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-green-400"
+              className="w-full min-w-[400px] border border-gray-300 dark:border-gray-800 dark:bg-[#202023] dark:text-[#ECECEC] rounded-lg px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-green-400"
               />
               <button
               onClick={handleSend}
@@ -164,7 +164,7 @@ export default function CreateCoursePage() {
             {/* Chat stream */}
             <div className="max-w-3xl mx-auto space-y-4 px-6">
               {/* Input field at top */}
-              <div className="sticky top-0 bg-gray-50 dark:bg-gray-900 pb-4">
+              <div className="sticky top-0 bg-white/50 dark:bg-[#111113] pb-4">
                 <div className="relative">
                   <textarea
                     value={topic}
@@ -172,7 +172,7 @@ export default function CreateCoursePage() {
                     onKeyDown={e => e.ctrlKey && e.key === 'Enter' && handleSend()}
                     placeholder="Add more details or ask questions..."
                     rows={2}
-                    className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg px-4 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-green-400"
+                    className="w-full border border-gray-300 dark:border-gray-800 dark:bg-[#111113] dark:text-[#ECECEC] rounded-lg px-4 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-green-400"
                   />
                   <button
                     onClick={handleSend}
@@ -194,7 +194,7 @@ export default function CreateCoursePage() {
 
               {botMessages.map((text, i) => (
                 <div key={`b${i}`} className="flex justify-start">
-                  <div className="max-w-[80%] px-4 py-2 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow">
+                  <div className="max-w-[80%] px-4 py-2 rounded-lg bg-white/50 dark:bg-[#111113] text-dark-gray dark:text-[#ECECEC] shadow dark:border-gray-800">
                     {text}
                   </div>
                 </div>

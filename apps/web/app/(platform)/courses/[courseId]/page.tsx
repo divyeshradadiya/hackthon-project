@@ -111,7 +111,15 @@ export default function ClientCoursePage() {
                   )}
                   {selectedModule.content ? (
                     <div className="dark:text-[#ECECEC]">
-                      <Markdown>{selectedModule.content}</Markdown>
+                      <Markdown
+                        editable={true}
+                        onSave={async (content) => {
+                          // TODO: Implement API call to save content
+                          console.log('Saving content:', content);
+                        }}
+                      >
+                        {selectedModule.content}
+                      </Markdown>
                     </div>
                   ) : (
                     <p className="text-gray-500 dark:text-gray-400">

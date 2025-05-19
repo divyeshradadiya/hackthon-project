@@ -25,35 +25,35 @@ import { Button } from "@repo/ui/button";
 export function ContentTabs() {
   return (
      <Tabs defaultValue="recommended" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-6 bg-white p-1 rounded-lg shadow-sm">
+            <TabsList className="grid w-full grid-cols-3 mb-6 bg-white/70 dark:bg-[#111113] p-1 rounded-lg shadow-sm dark:border dark:border-gray-800">
               <TabsTrigger
                 value="recommended"
-                className="rounded-md data-[state=active]:bg-primary data-[state=active]:text-white"
+                className="rounded-md data-[state=active]:bg-primary data-[state=active]:text-white dark:text-[#ECECEC] dark:data-[state=active]:bg-primary/80"
               >
                 Recommended
               </TabsTrigger>
               <TabsTrigger
                 value="popular"
-                className="rounded-md data-[state=active]:bg-primary data-[state=active]:text-white"
+                className="rounded-md data-[state=active]:bg-primary data-[state=active]:text-white dark:text-[#ECECEC] dark:data-[state=active]:bg-primary/80"
               >
                 Popular
               </TabsTrigger>
               <TabsTrigger
                 value="recent"
-                className="rounded-md data-[state=active]:bg-primary data-[state=active]:text-white"
+                className="rounded-md data-[state=active]:bg-primary data-[state=active]:text-white dark:text-[#ECECEC] dark:data-[state=active]:bg-primary/80"
               >
                 Recent
               </TabsTrigger>
             </TabsList>
             <TabsContent value="recommended" className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card className="card-container h-full">
+                <Card className="card-container h-full bg-white/40 dark:bg-[#111113] dark:border-gray-800">
                   <div className="card-content-wrapper h-full">
                     <CardHeader className="card-header-fixed">
-                      <CardTitle className="text-base">
+                      <CardTitle className="text-base dark:text-[#ECECEC]">
                         Fraction Operations
                       </CardTitle>
-                      <CardDescription className="text-neutral-gray">
+                      <CardDescription className="text-neutral-gray dark:text-gray-400">
                         Interactive lesson
                       </CardDescription>
                     </CardHeader>
@@ -74,7 +74,7 @@ export function ContentTabs() {
                       </div>
                     </CardContent>
                     <CardFooter className="card-footer-fixed">
-                      <Button className="w-full bg-primary text-white hover:bg-primary/90">
+                      <Button className="w-full bg-primary text-white hover:bg-primary/90 dark:bg-primary/80 dark:hover:bg-primary/70">
                         Start Lesson
                       </Button>
                     </CardFooter>
