@@ -173,3 +173,87 @@ export async function deleteCourse(courseId: string, userId: string) {
 
   return { success: true, deletedCourse, deletedModules };
 }
+
+export async function updateModuleContent(moduleId: string, content: string, userId: string) {
+  if (!moduleId || !content || !userId) {
+    throw new Error("moduleId, content and userId are required");
+  }
+
+  const moduleWithCourse = await db
+    .select({
+      moduleId: modules.id,
+      courseUserId: courses.userId,
+    })
+    .from(modules)
+    .innerJoin(courses, eq(modules.courseId, courses.id))
+    .where(eq(modules.id, moduleId))
+    .then(rows => rows[0]);
+
+  if (!moduleWithCourse) {
+    throw new Error("Module not found");
+  }
+
+  if (moduleWithCourse.courseUserId !== userId) {
+    throw new Error("Access denied");
+  }
+
+  // Update the module content
+  const [updatedModule] = await db
+    .update(modules)
+    .set({ content })
+    .where(eq(modules.id, moduleId))
+    .returning();
+
+  return updatedModule;
+}
+
+export async function getCourses(userId: string) {
+  if (!userId) {
+    throw new Error("userId is required");
+  }
+
+  const allCourses = await db
+    .select({
+      courses: {
+        id: courses.id,
+        title: courses.title,
+        learningInput: courses.learningInput,
+        createdAt: courses.createdAt,
+      },
+      modules: {
+        id: modules.id,
+        title: modules.title,
+      },
+    })
+    .from(courses)
+    .leftJoin(modules, eq(modules.courseId, courses.id))
+    .where(eq(courses.userId, userId))
+    .execute();
+
+  if (!allCourses || allCourses.length === 0) {
+    return [];
+  }
+
+  // Group courses and their modules
+  const coursesMap = new Map();
+
+  allCourses.forEach((result) => {
+    if (!result.courses) return;
+
+    if (!coursesMap.has(result.courses.id)) {
+      coursesMap.set(result.courses.id, {
+        courseId: result.courses.id,
+        title: result.courses.title,
+        learningInput: result.courses.learningInput,
+        createdAt: result.courses.createdAt,
+        moduleCount: 0,
+      });
+    }
+
+    if (result.modules) {
+      coursesMap.get(result.courses.id).moduleCount += 1;
+    }
+  });
+
+  return Array.from(coursesMap.values());
+}

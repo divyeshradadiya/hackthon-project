@@ -69,3 +69,9 @@ export const useDeleteCourse = () =>
     mutationFn: (courseId: string) =>
       axios.delete(`/api/course/delete-course?courseId=${courseId}`).then(res => res.data),
   });
+
+export const useUpdateModuleContent = () =>
+  useMutation({
+    mutationFn: ({ moduleId, content }: { moduleId: string; content: string }) =>
+      axios.post(`/api/course/update-module`, { moduleId, content }).then(res => res.data),
+  });

@@ -69,15 +69,17 @@ const NonMemoizedMarkdown = ({ children, editable = false, onSave }: MarkdownPro
   return (
     <div className="relative">
       {editable && (
-        <button
-          onClick={() => setIsEditing(true)}
-          className="absolute top-0 right-0 p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-        >
-          <Pencil className="w-4 h-4" />
-        </button>
+      <button
+        onClick={() => setIsEditing(true)}
+        className="absolute top-2 right-2 z-10 flex items-center gap-1 rounded-md bg-blue-50 dark:bg-blue-900 px-2 py-1 shadow-md border border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-200 hover:bg-blue-200 hover:text-blue-900 focus:outline-none"
+        title="Edit"
+      >
+        <Pencil className="w-4 h-4" />
+        <span className="text-xs font-medium">Edit</span>
+      </button>
       )}
       <ReactMarkdown remarkPlugins={remarkPlugins} components={components}>
-        {children}
+      {children}
       </ReactMarkdown>
     </div>
   );

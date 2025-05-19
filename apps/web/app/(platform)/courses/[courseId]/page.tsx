@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { useCourse, useUpdateModuleProgress } from "@/app/services/course-service";
+import { useCourse, useUpdateModuleProgress, useUpdateModuleContent } from "@/app/services/course-service";
 import { Markdown } from "@/app/components/Markdown";
 import { ModuleHeader } from "./_components/ModuleHeader";
 import { ModuleSidebar } from "./_components/ModuleSidebar";
 import { ModuleNavigation } from "./_components/ModuleNavigation";
 import { useProgressStore } from "@/app/store/progress-store";
+import { toast } from "sonner";
 import { Check } from "lucide-react";
 
 export default function ClientCoursePage() {
@@ -16,6 +17,7 @@ export default function ClientCoursePage() {
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const { mutate: updateProgress } = useUpdateModuleProgress();
+  const { mutate: updateContent } = useUpdateModuleContent();
   const { setModuleProgress, getModuleProgress, getCourseProgress } = useProgressStore();
 
   useEffect(() => {
@@ -107,8 +109,13 @@ export default function ClientCoursePage() {
                       <Markdown
                         editable={true}
                         onSave={async (content) => {
-                          // TODO: Implement API call to save content
-                          console.log('Saving content:', content);
+                          try {
+                            await updateContent({ moduleId: selectedModule.id, content });
+                            toast.success("Content saved successfully");
+                          } catch (error) {
+                            toast.error("Failed to save content");
+                            console.error("Error saving content:", error);
+                          }
                         }}
                       >
                         {selectedModule.content}
