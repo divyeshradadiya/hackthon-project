@@ -2,7 +2,7 @@ import { Header } from "./components/header"
 import { Hero } from "./components/home/hero"
 import { TrustedBy } from "./components/home/trusted-by"
 import { Features } from "./components/home/features"
-import { HowItWorks } from "./components/home/how-it-works"
+// import { HowItWorks } from "./components/home/how-it-works"
 import { Testimonials } from "./components/home/testimonials"
 import { Cta } from "./components/home/cta"
 import { Footer } from "./components/footer"
@@ -14,7 +14,7 @@ export default function LandingPage() {
       <Hero />
       <TrustedBy />
       <Features />
-      <HowItWorks />
+      {/* <HowItWorks /> */}
       <Testimonials />
       <Cta />
       <Footer />
