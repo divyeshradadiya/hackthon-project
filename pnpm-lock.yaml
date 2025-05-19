@@ -154,6 +154,9 @@ importers:
       postgres:
         specifier: ^3.4.3
         version: 3.4.5
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*

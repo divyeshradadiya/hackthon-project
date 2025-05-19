@@ -7,19 +7,19 @@ import { FaRobot, FaPaperPlane, FaLightbulb } from 'react-icons/fa';
 import { Loader2 } from 'lucide-react';
 
 const examplePrompts = [
+  'I really wanna start a business in software and I wanna launch my product but I dont know how to do business.',
   'CA : interpretation of the numerical values of elasticity of demand',
-  'i wanna start a business in software, or i wanna launch my product but i dont know how to do business.',
   'learning python from scrach',
   "Intro of web development in react",
   'Full-Stack Interview Preparation Guide with System Design',
   'how to make a punjabi food',
   'Italian Cuisine Masterclass: From Basics to Advanced',
-  'Complete AWS Services Documentation Simplified',
+  // 'Complete AWS Services Documentation Simplified',
   'MERN Stack Development',
   'Learn about tailwindCSS',
-  'Complete DevOps Pipeline Implementation',
+  // 'Complete DevOps Pipeline Implementation',
   'Japanese Language: N5 to N1 Preparation',
-  'Digital Marketing: SEO to Social Media Strategy'
+  // 'Digital Marketing: SEO to Social Media Strategy'
 ];
 
 // the simulated AI steps
@@ -46,6 +46,18 @@ export default function CreateCoursePage() {
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, botMessages]);
+
+  // Cleanup effect
+  useEffect(() => {
+    return () => {
+      setMessages([]);
+      setBotMessages([]);
+      setIsGenerating(false);
+      setIsThinking(false);
+      setIsRedirecting(false);
+      setTopic('');
+    };
+  }, []);
 
   // recursively show one AI step at a time
   const showNextMessage = (index: number) => {
@@ -75,6 +87,13 @@ export default function CreateCoursePage() {
     const trimmed = topic.trim();
     if (!trimmed) return;
 
+    // Reset states before starting new generation
+    setMessages([]);
+    setBotMessages([]);
+    setIsGenerating(false);
+    setIsThinking(false);
+    setIsRedirecting(false);
+
     setMessages(m => [...m, { from: 'user', text: trimmed }]);
     setTopic('');
     setIsGenerating(true);
@@ -86,6 +105,11 @@ export default function CreateCoursePage() {
         setTimeout(() => {
           router.push(`/courses/${data.courseId}`);
         }, 2000);
+      },
+      onError: (error) => {
+        setBotMessages(prev => [...prev, "❌ Failed to generate course. Please try again."]);
+        setIsGenerating(false);
+        setIsThinking(false);
       }
     });
   };

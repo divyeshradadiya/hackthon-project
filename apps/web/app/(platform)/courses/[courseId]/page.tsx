@@ -133,7 +133,7 @@ export default function ClientCoursePage() {
                   )}
                 </div>
               </div>
-              <div className="flex-shrink-0 border-t border-gray-200 dark:border-gray-800 p-6 bg-white dark:bg-[#1E1E20]">
+              <div className="flex-shrink-0 border-t border-gray-200 dark:border-gray-800 p-6 py-3 bg-white dark:bg-[#1E1E20]">
                 <div className="max-w-5xl mx-auto">
                   <ModuleNavigation
                     onPrevious={handlePreviousModule}
