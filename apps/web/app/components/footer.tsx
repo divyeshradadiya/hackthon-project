@@ -11,11 +11,12 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
           <div className="lg:col-span-2">
             <div className="flex items-center mb-4">
-              <Brain className="h-8 w-8 text-primary mr-2" />
-              <span className="text-xl font-bold text-primary">MathQuest</span>
+              <h1 className="text-xl font-bold tracking-tight whitespace-nowrap flex-1 text-center">
+            <span className="text-green-600">Selflearn</span>.AI
+          </h1>
             </div>
             <p className="text-neutral-gray text-sm mb-6">
-              Transform your math learning journey with MathQuest. Interactive lessons, games, and rewards make learning fun and effective.
+              Transform your math learning journey with AI. Interactive lessons, games, and rewards make learning fun and effective.
             </p>
             <div className="mb-6">
               <h5 className="font-medium text-dark-gray mb-2">Join our newsletter</h5>
@@ -111,7 +112,7 @@ export function Footer() {
 
         <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center">
           <div className="text-sm text-neutral-gray mb-4 md:mb-0">
-            © 2024 MathQuest. All rights reserved.
+            © 2025 selfLearn.AI. All rights reserved.
           </div>
           <div className="flex items-center gap-8">
             <div className="flex gap-6">
