@@ -55,11 +55,11 @@ export default function CreateCoursePage() {
           setBotMessages(prev => [...prev, aiSteps[index] as string]);
         }
         showNextMessage(index + 1);
-      }, Math.random() * 1000 + 4000);
+      }, Math.random() * 1000 + 6000);
     } else {
       setBotMessages(prev => [
         ...prev,
-        "✨ Course generation complete! Redirecting shortly...wait a moment."
+        '✨ Course generation complete! Redirecting shortly...wait a moment, it may take upto 1 min. ( if you are not redirected and loading is off then plz type another prompt or refresh the page to try again)',
       ]);
       setIsThinking(false);
     }

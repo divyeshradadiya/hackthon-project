@@ -84,7 +84,7 @@ export default function ClientCoursePage() {
           {selectedModule ? (
             <>
               <div className="flex-1 overflow-y-auto p-6 custom-scrollbar-thin">
-                <div className="max-w-5xl mx-auto">
+                <div className="max-w-[1100px] mx-auto">
                   <div className="flex justify-between items-center mb-6 pb-2 border-b border-gray-200/10 dark:border-gray-800">
                     <h2 className="text-2xl font-bold">{selectedModule.title}</h2>
                     <button

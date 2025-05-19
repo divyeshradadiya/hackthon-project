@@ -2,14 +2,14 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Menu, MoonIcon, Sun, X } from 'lucide-react';
+import { Menu, MoonIcon, Sun, X, PlusCircle } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 import { usePathname } from 'next/navigation';
 
 const sidebarItems = [
   { icon: '🏠', name: 'Dashboard', href: '/dashboard' },
-  { icon: '➕', name: 'Create a Module', href: '/courses/create' },
+  { icon: <PlusCircle size={18} />, name: 'Create a Module', href: '/courses/create' },
   { icon: '📚', name: 'My Modules', href: '/courses' },
   // { icon: '📖', name: 'Learning', href: '/learning' },
   { icon: '🧠', name: 'Quiz Me', href: '/quiz' },
@@ -60,7 +60,7 @@ const Sidebar: React.FC = () => {
                     : 'hover:bg-gray-100 dark:hover:bg-gray-800'
                   }`}
               >
-                <span className="text-lg">{icon}</span>
+                <span className="text-lg">{typeof icon === 'string' ? icon : icon}</span>
                 <span className={`${!isOpen && 'hidden'} whitespace-nowrap ml-3`}>{name}</span>
               </Link>
             </li>
