@@ -25,8 +25,8 @@ export function DailyChallenges() {
           <ChallengeItem
             icon={Award}
             title="Solve 5 Fraction Problems"
-            progress="3/5 completed"
-            status="active"
+            progress="0/5 completed"
+            // status="active"
             color="success"
           />
           <ChallengeItem

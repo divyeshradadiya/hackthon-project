@@ -34,13 +34,13 @@ export function Header() {
               How it Works
             </Link>
             <Link
-              href="/pricing"
+              href="#pricing"
               className="text-gray-600 hover:text-primary transition-colors font-medium"
             >
               Pricing
             </Link>
             <Link
-              href="/blog"
+              href=""
               className="text-gray-600 hover:text-primary transition-colors font-medium"
             >
               Blog
