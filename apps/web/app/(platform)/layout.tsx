@@ -2,14 +2,27 @@
 
 import React from "react";
 import Sidebar from "../components/dashboard/Sidebar";
+import { useUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
+import { ThemeProvider } from "../components/theme-provider";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+    const { isSignedIn, user, isLoaded } = useUser();
+    if(!isSignedIn && isLoaded) {
+       redirect("/");
+    }
   return (
-    <main className="min-h-screen flex flex-col bg-gray-50">
+     <ThemeProvider
+      attribute="class"
+      defaultTheme="light"
+      enableSystem={true}
+      disableTransitionOnChange={true}
+    >
+    <main className="min-h-screen flex flex-col">
       {/* <Header /> */}
       <div className="flex flex-1">
         <div className="sticky top-0 h-screen">
@@ -18,5 +31,6 @@ export default function DashboardLayout({
         <div className="flex-1 overflow-y-auto">{children}</div>
       </div>
     </main>
+    </ThemeProvider>
   );
 }

@@ -18,7 +18,7 @@ export default function LandingPage() {
       <Testimonials />
       <Cta />
       <Footer />
-    </div>
+    </div>    
   )
 }
 

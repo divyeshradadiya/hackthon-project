@@ -2,19 +2,22 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { useCourse, useUpdateModuleProgress } from "@/app/services/course-service";
+import { useCourse, useUpdateModuleProgress, useUpdateModuleContent } from "@/app/services/course-service";
 import { Markdown } from "@/app/components/Markdown";
 import { ModuleHeader } from "./_components/ModuleHeader";
 import { ModuleSidebar } from "./_components/ModuleSidebar";
 import { ModuleNavigation } from "./_components/ModuleNavigation";
 import { useProgressStore } from "@/app/store/progress-store";
+import { toast } from "sonner";
 import { Check } from "lucide-react";
 
 export default function ClientCoursePage() {
   const { courseId } = useParams();
-  const { data, isLoading, isError } = useCourse(courseId as string);
+  const { data, isLoading, isError, refetch } = useCourse(courseId as string);
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const { mutate: updateProgress } = useUpdateModuleProgress();
+  const { mutate: updateContent } = useUpdateModuleContent();
   const { setModuleProgress, getModuleProgress, getCourseProgress } = useProgressStore();
 
   useEffect(() => {
@@ -67,26 +70,21 @@ export default function ClientCoursePage() {
   return (
     <div className="flex flex-col h-screen bg-[#f9f9f9] dark:bg-[#1E1E20]">
       <ModuleHeader title={data.title} />
-      {/* <div className="text-sm text-gray-600 dark:text-gray-400 px-6 pb-2">
-        Progress: {courseProgress.toFixed(0)}%
-      </div> */}
 
       <div className="flex flex-1 overflow-hidden">
         <ModuleSidebar
           modules={data.modules}
           selectedModuleId={selectedModuleId}
           onSelectModule={setSelectedModuleId}
-          // progress={data.modules.reduce((acc, module) => ({
-          //   ...acc,
-          //   [module.id]: getModuleProgress(module.id)?.completed || false
-          // }), {})}
+          isCollapsed={isSidebarCollapsed}
+          onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
         />
 
-        <div className="flex-1 flex flex-col overflow-hidden bg-white dark:bg-[#1E1E20] backdrop-blur-sm">
+        <div className={`flex-1 flex flex-col overflow-hidden bg-white dark:bg-[#1E1E20] backdrop-blur-sm`}>
           {selectedModule ? (
             <>
               <div className="flex-1 overflow-y-auto p-6 custom-scrollbar-thin">
-                <div className="max-w-3xl mx-auto">
+                <div className="max-w-[1100px] mx-auto">
                   <div className="flex justify-between items-center mb-6 pb-2 border-b border-gray-200/10 dark:border-gray-800">
                     <h2 className="text-2xl font-bold">{selectedModule.title}</h2>
                     <button
@@ -101,9 +99,6 @@ export default function ClientCoursePage() {
                       {getModuleProgress(selectedModule.id)?.completed ? "Completed" : "Mark as Complete"}
                     </button>
                   </div>
-                  {/* <h2 className="text-2xl font-bold mb-6 pb-2 border-b border-gray-200/10 dark:border-gray-800">
-                    {selectedModule.title}
-                  </h2> */}
                   {selectedModule.description && (
                     <p className="text-sm italic text-gray-600 dark:text-gray-400 mb-6">
                       {selectedModule.description}
@@ -111,7 +106,25 @@ export default function ClientCoursePage() {
                   )}
                   {selectedModule.content ? (
                     <div className="dark:text-[#ECECEC]">
-                      <Markdown>{selectedModule.content}</Markdown>
+                      <Markdown
+                        editable={true}
+                        onSave={async (content) => {
+                          try {
+                            await updateContent({ moduleId: selectedModule.id, content });
+                            // Add a small delay before refetching to ensure the update is processed
+                            setTimeout(async () => {
+                              await refetch();
+                            }, 500);
+                            toast.success("Content saved successfully");
+                          } catch (error) {
+                            toast.error("Failed to save content");
+                            console.error("Error saving content:", error);
+                            throw error; // Re-throw to keep editor open
+                          }
+                        }}
+                      >
+                        {selectedModule.content}
+                      </Markdown>
                     </div>
                   ) : (
                     <p className="text-gray-500 dark:text-gray-400">
@@ -120,8 +133,8 @@ export default function ClientCoursePage() {
                   )}
                 </div>
               </div>
-              <div className="flex-shrink-0 border-t border-gray-200 dark:border-gray-800 p-6 bg-white dark:bg-[#1E1E20]">
-                <div className="max-w-3xl mx-auto">
+              <div className="flex-shrink-0 border-t border-gray-200 dark:border-gray-800 p-6 py-3 bg-white dark:bg-[#1E1E20]">
+                <div className="max-w-5xl mx-auto">
                   <ModuleNavigation
                     onPrevious={handlePreviousModule}
                     onNext={handleNextModule}

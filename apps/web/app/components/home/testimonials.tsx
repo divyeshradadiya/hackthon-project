@@ -1,85 +1,118 @@
 import { Badge } from "@repo/ui/badge";
 import { Card } from "@repo/ui/card";
-import { Star, BarChart, CheckCircle, Users } from "lucide-react";
+import { Star, Clock, Code, Users } from "lucide-react";
 
 export function Testimonials() {
+  const testimonials = [
+    {
+      name: "Dr. Lee",
+      role: "Curriculum Manager",
+      avatar: "DL",
+      quote:
+        "This platform revolutionized how we build courses—what used to take days now takes minutes. Our team couldn’t be happier!",
+      stars: 5,
+      color: "blue",
+    },
+    {
+      name: "Jordan",
+      role: "Bootcamp Lead",
+      avatar: "JH",
+      quote:
+        "The ability to edit AI-generated lessons on the fly lets us adapt material to each cohort instantly. Engagement is through the roof!",
+      stars: 5,
+      color: "green",
+    },
+    {
+      name: "Dr. Maya Patel",
+      role: "Research Scientist, EduLabs",
+      avatar: "MP",
+      quote:
+        "We used AI-generated modules to pilot new teaching methods. The analytics gave us insights we never had before—game-changer for our studies!",
+      stars: 5,
+      color: "purple",
+    },
+    {
+      name: "Carlos",
+      role: "Self-Paced Learner",
+      avatar: "C",
+      quote:
+        "As someone learning on my own schedule, the quizzes and progress dashboard kept me motivated—I've never felt more in control of my learning!",
+      stars: 5,
+      color: "pink",
+    },
+  ];
+
+  const stats = [
+    {
+      value: "95%",
+      label: "Creator Satisfaction",
+      icon: <Star className="h-6 w-6 text-blue-600" />,
+    },
+    {
+      value: "80%",
+      label: "Time Saved",
+      icon: <Clock className="h-6 w-6 text-green-600" />,
+    },
+    {
+      value: "5K+",
+      label: "Modules Generated",
+      icon: <Code className="h-6 w-6 text-pink-600" />,
+    },
+    {
+      value: "10K+",
+      label: "Active Users",
+      icon: <Users className="h-6 w-6 text-yellow-600" />,
+    },
+  ];
+
   return (
     <section className="py-20 bg-white">
       <div className="container px-4 mx-auto">
+        {/* Heading */}
         <div className="text-center mb-16">
           <Badge className="mb-4 bg-destructive/10 text-destructive border-0 py-1.5 px-3">
-            Success stories
+            Success Stories
           </Badge>
-          <h2 className="text-3xl md:text-4xl font-bold text-dark-gray mb-4">
-            What Our Students Say
-          </h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-dark-gray mb-4">
+            JUST WALL OF LOVE 💖
+            </h2>
           <p className="text-lg text-neutral-gray max-w-2xl mx-auto">
-            Join thousands of students who have transformed their relationship
-            with math through MathQuest
+            Hear from course creators, researchers, bootcamp leads, and self-learners who've transformed how they teach and learn.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            {
-              name: "Alex, 10",
-              avatar: "A",
-              quote:
-                "I used to hate math, but now it's my favorite subject! The games make learning so much fun and I actually look forward to practice time.",
-              stars: 5,
-              improvement: "Grade improved from C to A",
-              color: "primary",
-            },
-            {
-              name: "Sophia, 12",
-              avatar: "S",
-              quote:
-                "MathQuest helped me understand fractions when I was really struggling. The visual lessons and games made it click for me!",
-              stars: 5,
-              improvement: "Mastered fractions in 3 weeks",
-              color: "secondary",
-            },
-            {
-              name: "Ethan, 9",
-              avatar: "E",
-              quote:
-                "I love earning stars and badges. It makes me want to practice math every day! My parents are amazed at how much I've improved.",
-              stars: 5,
-              improvement: "Practices daily without reminders",
-              color: "success",
-            },
-          ].map((testimonial, index) => (
+        {/* Testimonials */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+          {testimonials.map((t, idx) => (
             <Card
-              key={index}
-              className={`bg-white rounded-xl shadow-md border border-${testimonial.color}/20 p-6 hover:shadow-lg transition-all duration-300 group overflow-hidden relative h-full`}
+              key={idx}
+              className={`bg-white rounded-xl shadow-md border border-${t.color}/20 p-6 hover:shadow-lg transition-all duration-300 relative h-full`}
             >
+              {/* Accent bar */}
               <div
-                className={`absolute top-0 left-0 w-full h-1 bg-${testimonial.color}/50`}
-              ></div>
+                className={`absolute top-0 left-0 w-full h-1 bg-${t.color}/50`}
+              />
+              {/* Stars */}
               <div className="flex mb-4">
-                {[...Array(testimonial.stars)].map((_, i) => (
+                {Array.from({ length: t.stars }).map((_, i) => (
                   <Star
                     key={i}
-                    className="h-5 w-5 text-secondary fill-secondary"
+                    className={`h-5 w-5 text-${t.color} fill-${t.color}`}
                   />
                 ))}
               </div>
-              <p className="text-dark-gray mb-6 italic">
-                "{testimonial.quote}"
-              </p>
+              {/* Quote */}
+              <p className="text-dark-gray mb-6 italic">"{t.quote}"</p>
+              {/* Author */}
               <div className="flex items-center mt-auto pt-4 border-t border-gray-100">
                 <div
-                  className={`w-10 h-10 rounded-full bg-${testimonial.color}/20 flex items-center justify-center text-${testimonial.color} font-bold mr-3`}
+                  className={`w-10 h-10 rounded-full bg-${t.color}/20 flex items-center justify-center text-${t.color} font-bold mr-3`}
                 >
-                  {testimonial.avatar}
+                  {t.avatar}
                 </div>
                 <div>
-                  <div className="font-bold text-dark-gray">
-                    {testimonial.name}
-                  </div>
-                  <div className="text-sm text-neutral-gray">
-                    {testimonial.improvement}
-                  </div>
+                  <div className="font-bold text-dark-gray">{t.name}</div>
+                  <div className="text-sm text-neutral-gray">{t.role}</div>
                 </div>
               </div>
             </Card>
@@ -87,40 +120,19 @@ export function Testimonials() {
         </div>
 
         {/* Stats */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8">
-          {[
-            {
-              value: "95%",
-              label: "Student Satisfaction",
-              icon: <Star className="h-6 w-6 text-secondary" />,
-            },
-            {
-              value: "87%",
-              label: "Grade Improvement",
-              icon: <BarChart className="h-6 w-6 text-primary" />,
-            },
-            {
-              value: "10M+",
-              label: "Problems Solved",
-              icon: <CheckCircle className="h-6 w-6 text-success" />,
-            },
-            {
-              value: "50K+",
-              label: "Active Students",
-              icon: <Users className="h-6 w-6 text-destructive" />,
-            },
-          ].map((stat, index) => (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          {stats.map((s, idx) => (
             <div
-              key={index}
-              className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-center hover:shadow-md transition-all duration-300 transform hover:translate-y-[-2px]"
+              key={idx}
+              className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-center hover:shadow-md transition-all duration-300 transform hover:-translate-y-1"
             >
               <div className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center mx-auto mb-4">
-                {stat.icon}
+                {s.icon}
               </div>
               <div className="text-3xl font-bold text-dark-gray mb-1">
-                {stat.value}
+                {s.value}
               </div>
-              <div className="text-sm text-neutral-gray">{stat.label}</div>
+              <div className="text-sm text-neutral-gray">{s.label}</div>
             </div>
           ))}
         </div>

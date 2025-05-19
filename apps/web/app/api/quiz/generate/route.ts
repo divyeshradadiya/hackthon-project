@@ -34,7 +34,7 @@ export async function POST(request: Request) {
     const { base, bonus } = pointsMap[difficulty as keyof typeof pointsMap];
 
     const prompt = `
-Generate 5 multiple choice quiz questions about "${topic}" at a ${difficulty} difficulty level.
+Generate quiz between 5 and 20 multiple choice quiz questions about "${topic}" at a ${difficulty} difficulty level.
 
 Each question must include:
 - id: number (starting from 1)

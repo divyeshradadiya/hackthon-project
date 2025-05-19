@@ -5,14 +5,94 @@ import { createPortal } from "react-dom";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { CodeBlock } from "./CodeBlock";
-import { ArrowUpRight, LinkIcon } from "lucide-react";
+import { ArrowUpRight, LinkIcon, Pencil, Save, X } from "lucide-react";
 
-const NonMemoizedMarkdown = ({ children }: { children: string }) => {
-  console.log(children)
+interface MarkdownProps {
+  children: string;
+  editable?: boolean;
+  onSave?: (content: string) => void;
+}
+
+const NonMemoizedMarkdown = ({ children, editable = false, onSave }: MarkdownProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editContent, setEditContent] = useState(children);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSave = async () => {
+    if (!onSave) return;
+    setIsSaving(true);
+    try {
+      await onSave(editContent);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Failed to save:", error);
+      // Keep editor open on error
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setEditContent(children);
+    setIsEditing(false);
+  };
+
+  if (isEditing && editable) {
+    return (
+      <div className="relative flex flex-col md:flex-row gap-4 h-[600px]">
+        {/* Editor */}
+        <div className="flex-1 flex flex-col h-full overflow-hidden">
+          <textarea
+            value={editContent}
+            onChange={(e) => setEditContent(e.target.value)}
+            className="w-full h-full p-4 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono resize-none overflow-y-auto"
+            style={{ fontFamily: 'inherit' }}
+          />
+          <div className="flex gap-2 mt-2 py-2">
+            <button
+              onClick={handleSave}
+              disabled={isSaving}
+              className="flex items-center gap-2 px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-blue-300"
+            >
+              <Save className="w-4 h-4" /> {isSaving ? 'Saving...' : 'Save'}
+            </button>
+            <button
+              onClick={handleCancel}
+              className="flex items-center gap-2 px-3 py-1 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+            >
+              <X className="w-4 h-4" /> Cancel
+            </button>
+          </div>
+        </div>
+        {/* Live Preview */}
+        <div className="flex-1 border rounded-md border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-4 h-full overflow-hidden">
+          <div className="text-xs text-gray-500 mb-2">Live Preview</div>
+          <div className="h-[calc(100%-2rem)] overflow-y-auto">
+            <ReactMarkdown remarkPlugins={remarkPlugins} components={components}>
+              {editContent}
+            </ReactMarkdown>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <ReactMarkdown remarkPlugins={remarkPlugins} components={components}>
+    <div className="relative">
+      {editable && (
+      <button
+        onClick={() => setIsEditing(true)}
+        className="absolute top-2 right-2 z-10 flex items-center gap-1 rounded-md bg-blue-50 dark:bg-blue-900 px-2 py-1 shadow-md border border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-200 hover:bg-blue-200 hover:text-blue-900 focus:outline-none"
+        title="Edit"
+      >
+        <Pencil className="w-4 h-4" />
+        <span className="text-xs font-medium">Edit</span>
+      </button>
+      )}
+      <ReactMarkdown remarkPlugins={remarkPlugins} components={components}>
       {children}
-    </ReactMarkdown>
+      </ReactMarkdown>
+    </div>
   );
 };
 

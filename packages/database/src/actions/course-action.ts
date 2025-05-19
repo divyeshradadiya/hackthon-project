@@ -2,6 +2,8 @@ import { OpenAI } from "openai";
 import { and, eq } from "drizzle-orm";
 import { courses, modules } from "../schema";
 import { db } from "..";
+import { z } from 'zod';
+import { zodTextFormat } from 'openai/helpers/zod';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -10,136 +12,146 @@ interface CreateCourseInput {
   userId: string;
 }
 
-interface ModuleSummary {
-  title: string;
-  description: string;
-}
+const ModuleSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+});
+
+const ModuleListSchema = z.object({
+  modules: z.array(ModuleSchema)
+});
+
+const ModuleContentSchema = z.object({
+  details: z.array(z.string())
+});
+
+// Add retry utility
+const retry = async <T>(fn: () => Promise<T>, attempts = 3): Promise<T> => {
+  for (let i = 0; i < attempts; i++) {
+    try {
+      return await fn();
+    } catch (error) {
+      if (i === attempts - 1) throw error;
+      await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+    }
+  }
+  throw new Error('Retry failed');
+};
 
 export async function createCourse({ learningInput, userId }: CreateCourseInput) {
-  if (!learningInput || typeof learningInput !== "string") {
+  if (!learningInput?.trim()) {
     throw new Error("learningInput is required");
   }
 
-  // -------- Phase 1: Generate module titles and summaries --------
-  const listPrompt = `
-You are an expert AI course generator.
+  try {
+    // Phase 1: Generate modules with improved prompts
+    const moduleListResult = await retry(async () => {
+      const systemPrompt = `You are an expert course creator. Create well-structured, comprehensive learning modules.`;
+      const listPrompt = `
+Create 5-8 learning modules for "${learningInput}".
+Ensure modules follow a logical learning progression.
+Return a JSON array of modules with clear titles and descriptions.`.trim();
 
-Based on the learning input "${learningInput}", create modules that are best suited for learning.
+      const listResp = await openai.responses.create({
+        model: "gpt-4o-mini",
+        max_output_tokens: 14000,
+        input: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: listPrompt }
+        ],
+        text: { format: zodTextFormat(ModuleListSchema, 'modules') }
+      });
 
-Return **only** a JSON array of objects, each with:
-- "title": short module title
-- "description": one-line summary
-
-Do **not** include details yet, and do **not** wrap in Markdown fences.
-  `.trim();
-
-  const listResp = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
-    messages: [{ role: "user", content: listPrompt }],
-    max_completion_tokens: 14000,
-  });
-
-  let rawList = (listResp.choices[0]?.message?.content ?? "[]")
-    .trim()
-    .replace(/^```(?:json)?\s*/, "")
-    .replace(/\s*```$/, "");
-
-  const moduleList: ModuleSummary[] = JSON.parse(rawList);
-  if (!Array.isArray(moduleList) || moduleList.length === 0) {
-    throw new Error("AI returned invalid module list");
-  }
-
-  // -------- Phase 2: Insert course and placeholder modules --------
-  const [course] = await db
-    .insert(courses)
-    .values({
-      title: `Intro to ${learningInput}`,
-      learningInput,
-      userId,
-    })
-    .returning();
-
-  if (!course?.id) throw new Error("Course insertion failed");
-
-  const insertedModules = await db
-    .insert(modules)
-    .values(
-      moduleList.map((m) => ({
-        title: m.title,
-        description: m.description,
-        content: "",
-        courseId: course.id,
-      }))
-    )
-    .returning();
-
-  // -------- Phase 3: Generate detailed content for each module --------
-  const makeDetails = async () => {
-    const detailsPrompt = `
-You are an expert AI course generator.
-Provide detailed and well-structured Markdown content for each module.
-You may use code blocks, lists, tables, charts, and other Markdown features, and include appropriate links.
-Do not include the module's title or description in the details.
-
-Here is the list of ${moduleList.length} modules (title & summary):
-${JSON.stringify(moduleList, null, 2)}
-
-Now return **only** a JSON object with exactly this shape:
-{
-  "details": [
-    "Detailed Markdown for module 1, with all backslashes \\\\ and quotes \\" properly escaped.",
-    ... (one entry per module, in the same order)
-  ]
-}
-
-- **Important**: Escape all backslashes and quotation marks so that this is valid JSON.
-    `.trim();
-
-    const resp = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      max_completion_tokens: 14000,
-      messages: [{ role: "user", content: detailsPrompt }],
+      const parsed = ModuleListSchema.parse(JSON.parse(listResp.output_text));
+      if (!parsed.modules?.length) throw new Error("No modules generated");
+      return parsed.modules;
     });
 
-    let raw = (resp.choices[0]?.message?.content ?? "")
-      .trim()
-      .replace(/^```(?:json)?\s*/, "")
-      .replace(/\s*```$/, "");
+    // Insert course
+    const [course] = await db
+      .insert(courses)
+      .values({
+        title: `${learningInput}`,
+        learningInput,
+        userId,
+      })
+      .returning();
 
-    // Sanitize stray backslashes before parsing
-    raw = raw.replace(/\\(?!["\\/bfnrtu])/g, "\\\\");
+    if (!course?.id) throw new Error("Course insertion failed");
 
-    const parsed = JSON.parse(raw) as { details?: string[] };
-    if (!parsed.details || !Array.isArray(parsed.details)) {
-      throw new Error("AI did not return a valid details array");
-    }
-    return parsed.details;
-  };
+    // Insert modules
+    const insertedModules = await db
+      .insert(modules)
+      .values(
+        moduleListResult.map((m) => ({
+          title: m.title,
+          description: m.description,
+          content: "",
+          courseId: course.id,
+          createdAt: new Date(),
+        }))
+      )
+      .returning();
 
-  const detailsArray = await makeDetails();
+    // Generate content with improved prompts
+    const detailsArray = await retry(async () => {
+      const systemPrompt = `You are an expert content creator. Create detailed, engaging educational content.`;
+      const detailsPrompt = `
+Create detailed markdown content for each module about "${learningInput}".
+Each module's content must be in a separate item, in the same order, with minimal overlap.
+Modules: ${JSON.stringify(moduleListResult, null, 2)}
 
-  // -------- Phase 4: Update modules with detailed content --------
-  await Promise.all(
-    insertedModules.map((mod, idx) =>
-      db
+Return a JSON array of strings, one string per module in order.
+`.trim();
+
+      const resp = await openai.responses.create({
+        model: "gpt-4o-mini",
+                max_output_tokens: 14000,
+        input: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: detailsPrompt }
+        ],
+        text: { format: zodTextFormat(ModuleContentSchema, 'details') }
+      });
+
+      const parsed = ModuleContentSchema.parse(JSON.parse(resp.output_text));
+      if (!parsed.details?.length) throw new Error("No content generated");
+      return parsed.details;
+    });    // Update modules with content sequentially to maintain order
+    const updatedModules = [];
+    for (let i = 0; i < insertedModules.length; i++) {
+      if (!insertedModules[i]) {
+        return null;
+      }
+      const result = await db
         .update(modules)
-        .set({ content: detailsArray[idx] })
-        .where(eq(modules.id, mod.id))
-    )
-  );
+        .set({ content: detailsArray[i] || '' })
+        .where(eq(modules.id, insertedModules[i]!.id))
+        .returning();
+      
+      if (!result[0]) {
+        throw new Error(`Failed to update module at index ${i}`);
+      }
+      updatedModules.push(result[0]);
+    }
 
-  // -------- Final: Return full course data --------
-  return {
-    courseId: course.id,
-    title: course.title,
-    learningInput: course.learningInput,
-    createdAt: course.createdAt,
-    modules: insertedModules.map((m, idx) => ({
-      title: m.title,
-      description: m.description,
-      details: detailsArray[idx],
-    })),
-  };
+    return {
+      courseId: course.id,
+      title: course.title,
+      learningInput: course.learningInput,
+      createdAt: course.createdAt,
+      modules: updatedModules.map(m => ({
+        id: m.id,
+        title: m.title,
+        description: m.description,
+        content: m.content,
+      })),
+    };
+
+  } catch (error) {
+    console.error('Course creation error:', error);
+    throw new Error(`Failed to create course: ${(error as Error).message}`);
+  }
 }
 
 
@@ -172,4 +184,89 @@ export async function deleteCourse(courseId: string, userId: string) {
     .returning();
 
   return { success: true, deletedCourse, deletedModules };
+}
+
+export async function updateModuleContent(moduleId: string, content: string, userId: string) {
+  if (!moduleId || !content || !userId) {
+    throw new Error("moduleId, content and userId are required");
+  }
+
+  const moduleWithCourse = await db
+    .select({
+      moduleId: modules.id,
+      courseUserId: courses.userId,
+    })
+    .from(modules)
+    .innerJoin(courses, eq(modules.courseId, courses.id))
+    .where(eq(modules.id, moduleId))
+    .then(rows => rows[0]);
+
+  if (!moduleWithCourse) {
+    throw new Error("Module not found");
+  }
+
+  if (moduleWithCourse.courseUserId !== userId) {
+    throw new Error("Access denied");
+  }
+
+  // Update the module content
+  const [updatedModule] = await db
+    .update(modules)
+    .set({ content })
+    .where(eq(modules.id, moduleId))
+    .returning();
+
+  return updatedModule;
+}
+
+export async function getCourses(userId: string) {
+  if (!userId) {
+    throw new Error("userId is required");
+  }
+
+  const allCourses = await db
+    .select({
+      courses: {
+        id: courses.id,
+        title: courses.title,
+        learningInput: courses.learningInput,
+        createdAt: courses.createdAt,
+      },
+      modules: {
+        id: modules.id,
+        title: modules.title,
+      },
+    })
+    .from(courses)
+    .leftJoin(modules, eq(modules.courseId, courses.id))
+    .where(eq(courses.userId, userId)).
+    orderBy(courses.createdAt)
+    .execute();
+
+  if (!allCourses || allCourses.length === 0) {
+    return [];
+  }
+
+  // Group courses and their modules
+  const coursesMap = new Map();
+
+  allCourses.forEach((result) => {
+    if (!result.courses) return;
+
+    if (!coursesMap.has(result.courses.id)) {
+      coursesMap.set(result.courses.id, {
+        courseId: result.courses.id,
+        title: result.courses.title,
+        learningInput: result.courses.learningInput,
+        createdAt: result.courses.createdAt,
+        moduleCount: 0,
+      });
+    }
+
+    if (result.modules) {
+      coursesMap.get(result.courses.id).moduleCount += 1;
+    }
+  });
+
+  return Array.from(coursesMap.values());
 }

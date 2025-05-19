@@ -11,24 +11,24 @@ export const QuizReview = ({ questions, userAnswers }: QuizReviewProps) => {
       {questions.map((question, index) => (
         <div 
           key={index}
-          className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow"
+          className="p-6 bg-white/50 dark:bg-[#111113] rounded-lg shadow border border-gray-200 dark:border-gray-800"
         >
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+          <h3 className="text-lg font-medium text-dark-gray dark:text-[#ECECEC] mb-4">
             Question {index + 1}: {question.question}
           </h3>
           <div className="space-y-2">
             {question.options.map((option, optionIndex) => (
               <div 
                 key={optionIndex}
-                className={`p-3 rounded-lg ${
+                className={`p-3 rounded-lg border-2 ${
                   question.correctAnswer === optionIndex
-                    ? 'bg-green-100 dark:bg-green-900/30 border-2 border-green-500'
+                    ? 'border-green-500 dark:border-green-500/80 bg-green-50 dark:bg-green-500/10'
                     : userAnswers[index] === optionIndex
-                    ? 'bg-red-100 dark:bg-red-900/30 border-2 border-red-500'
-                    : 'bg-gray-50 dark:bg-gray-700'
+                    ? 'border-red-500 dark:border-red-500/80 bg-red-50 dark:bg-red-500/10'
+                    : 'border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-[#111113]'
                 }`}
               >
-                <p className="text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <p className="text-dark-gray dark:text-[#ECECEC] flex items-center gap-2">
                   {option}
                   {question.correctAnswer === optionIndex && (
                     <span className="text-green-600 dark:text-green-400 text-sm">
@@ -45,13 +45,6 @@ export const QuizReview = ({ questions, userAnswers }: QuizReviewProps) => {
               </div>
             ))}
           </div>
-          {/* {question.explanation && (
-            <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
-              <p className="text-sm text-blue-800 dark:text-blue-200">
-                <strong>Explanation:</strong> {question.explanation}
-              </p>
-            </div>
-          )} */}
         </div>
       ))}
     </div>

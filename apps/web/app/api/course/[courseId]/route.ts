@@ -26,17 +26,19 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Course not found' }, { status: 404 });
   }
 
-  
-
-  // Group modules for the course
+  // Group modules for the course and sort by createdAt (ISO format)
   const courseData = results[0]?.courses;
   const modulesList = results
     .filter(r => r.modules)
-    .map(r => r.modules);
+    .map(r => r.modules)
+    .sort((a, b) => {
+      if (!a?.createdAt || !b?.createdAt) return 0;
+      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+    });
 
-    if (!courseData) {
-      return NextResponse.json({ error: 'Course not found' }, { status: 404 });
-    }
+  if (!courseData) {
+    return NextResponse.json({ error: 'Course not found' }, { status: 404 });
+  }
   const course = {
     courseId: courseData.id,
     title: courseData.title,

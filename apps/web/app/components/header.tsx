@@ -34,13 +34,13 @@ export function Header() {
               How it Works
             </Link>
             <Link
-              href="/pricing"
+              href="#pricing"
               className="text-gray-600 hover:text-primary transition-colors font-medium"
             >
               Pricing
             </Link>
             <Link
-              href="/blog"
+              href=""
               className="text-gray-600 hover:text-primary transition-colors font-medium"
             >
               Blog
@@ -63,11 +63,11 @@ export function Header() {
                   Log in
                 </Button>
               </SignInButton>
-              <Link href="/signup">
+              <SignInButton mode="modal">
                 <Button className="bg-gradient-to-r from-primary to-indigo-600 hover:opacity-90 text-white rounded-full px-6">
                   Get Started
                 </Button>
-              </Link>
+              </SignInButton>
             </SignedOut>
           </div>
 
@@ -130,11 +130,11 @@ export function Header() {
                     Log in
                   </Button>
                 </SignInButton>
-                <Link href="/signup">
+                <SignInButton mode="modal">
                   <Button className="w-full bg-gradient-to-r from-primary to-indigo-600 hover:opacity-90 text-white rounded-full">
                     Get Started
                   </Button>
-                </Link>
+                </SignInButton>
               </SignedOut>
             </div>
           </nav>
